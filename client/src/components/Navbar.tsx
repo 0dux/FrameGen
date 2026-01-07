@@ -27,7 +27,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8 transition duration-500">
           <Link
             to={"/"}
-            className="hover:text-pink-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
+            className="hover:text-brand-primary hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
           >
             Home
           </Link>

@@ -1,36 +1,60 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import "tailwindcss";
 
+:root {
+  /* ---------- Brand Colors ---------- */
+  --brand-primary: 14 223 251;    /* Electric Cyan — primary CTA, links */
+  --brand-secondary: 59 140 239;  /* Royal Blue — secondary actions, icons */
+  --brand-accent: 233 51 251;     /* Neon Magenta — hover, AI highlights */
+  --brand-warm: 250 114 107;      /* Coral Red — alerts, errors (rare) */
+
+  /* ---------- Surfaces ---------- */
+  --surface-base: 15 17 21;       /* Deep Charcoal Black — app background */
+  --surface-muted: 23 27 31;      /* Dark Graphite — section backgrounds */
+  --surface-card: 30 35 41;       /* Slate Charcoal — cards, panels */
+  --surface-border: 42 47 54;     /* Soft Graphite — borders, dividers */
+
+  /* ---------- Text ---------- */
+  --text-primary: 255 255 255;    /* Pure White — headings, main text */
+  --text-secondary: 168 176 188;  /* Cool Gray — body text */
+  --text-muted: 107 114 128;      /* Muted Gray — labels, hints */
+}
+
+
 @theme {
-    --font-poppins: "Poppins", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
 }
 
 body {
-    @apply bg-black text-white text-sm antialiased font-poppins;
+  @apply bg-black text-white text-sm antialiased font-poppins;
 }
 
 body::selection {
-    @apply bg-pink-600 text-white;
+  @apply bg-pink-600 text-white;
 }
 
 button {
-    @apply cursor-pointer;
+  @apply cursor-pointer;
 }
 
 .move-gradient {
-    background-image: linear-gradient(to right, var(--color-pink-500), var(--color-pink-300));
-    background-size: 200% 100%;
-    animation: movegradient 5s infinite;
+  background-image: linear-gradient(
+    to right,
+    var(--color-pink-500),
+    var(--color-pink-800)
+  );
+  background-size: 200% 100%;
+  animation: movegradient 4s infinite;
 }
 
 @keyframes movegradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
