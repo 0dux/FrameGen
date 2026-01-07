@@ -19,7 +19,7 @@ export default function Navbar() {
         <Link to={"/"}>
           <SvgLogo
             className={
-              "h-12 w-auto active:scale-95 transition-all duration-200"
+              "h-8 w-auto active:scale-95 transition-all duration-200"
             }
           />
         </Link>
