@@ -18,34 +18,32 @@ export default function Navbar() {
       >
         <Link to={"/"}>
           <SvgLogo
-            className={
-              "h-8 w-auto active:scale-95 transition-all duration-200"
-            }
+            className={"h-8 w-auto active:scale-95 transition-all duration-200"}
           />
         </Link>
 
         <div className="hidden md:flex items-center gap-8 transition duration-500">
           <Link
             to={"/"}
-            className="hover:text-brand-primary hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
+            className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
           >
             Home
           </Link>
           <Link
             to={"/generate"}
-            className="hover:text-pink-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
+            className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
           >
             Generate
           </Link>
           <Link
             to={"/my-generation"}
-            className="hover:text-pink-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
+            className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
           >
             My Generations
           </Link>
           <Link
             to={"#"}
-            className="hover:text-pink-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
+            className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
           >
             My Contacts
           </Link>
@@ -53,7 +51,7 @@ export default function Navbar() {
 
         <button
           onClick={() => navigate("/login")}
-          className="hidden md:block px-6 py-2.5 bg-pink-600 hover:bg-pink-700 active:scale-95 transition-all rounded-full"
+          className="hidden md:block px-6 py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all rounded-full"
         >
           Get Started!
         </button>
@@ -70,41 +68,41 @@ export default function Navbar() {
         <Link
           onClick={() => setIsOpen(false)}
           to={"/"}
-          className="hover:text-pink-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
+          className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
         >
           Home
         </Link>
         <Link
           onClick={() => setIsOpen(false)}
           to={"/generate"}
-          className="hover:text-pink-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
+          className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
         >
           Generate
         </Link>
         <Link
           onClick={() => setIsOpen(false)}
           to={"/my-generation"}
-          className="hover:text-pink-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
+          className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
         >
           My Generations
         </Link>
         <Link
           onClick={() => setIsOpen(false)}
           to={"#"}
-          className="hover:text-pink-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
+          className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
         >
           My Contacts
         </Link>
         <Link
           onClick={() => setIsOpen(false)}
           to={"/login"}
-          className="hover:text-pink-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
+          className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
         >
           Login
         </Link>
         <button
           onClick={() => setIsOpen(false)}
-          className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-pink-600 hover:bg-pink-700 transition text-white rounded-md flex"
+          className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-blue-600 hover:bg-blue-700 transition text-white rounded-md flex"
         >
           <XIcon />
         </button>

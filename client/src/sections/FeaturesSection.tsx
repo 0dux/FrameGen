@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import SectionTitle from "../components/SectionTitle";
 import { featuresData } from "../data/features";
 import type { IFeature } from "../types";
@@ -18,7 +19,7 @@ export default function FeaturesSection() {
             key={index}
             className={`${
               index === 1
-                ? "p-px rounded-[13px] bg-linear-to-br from-pink-600 to-slate-800"
+                ? "p-px rounded-[13px] bg-linear-to-br from-blue-600 to-slate-800"
                 : ""
             }`}
             initial={{ y: 150, opacity: 0 }}
@@ -45,7 +46,7 @@ export default function FeaturesSection() {
         ))}
       </div>
       <div className="mt-40 relative mx-auto max-w-5xl">
-        <div className="absolute -z-50 size-100 -top-10 -left-20 aspect-square rounded-full bg-pink-500/40 blur-3xl"></div>
+        <div className="absolute -z-50 size-100 -top-10 -left-20 aspect-square rounded-full bg-blue-500/40 blur-3xl"></div>
         <motion.p
           className="text-slate-300 text-lg text-left max-w-3xl"
           initial={{ y: 150, opacity: 0 }}
@@ -101,15 +102,16 @@ export default function FeaturesSection() {
               Boost your views with AI-optimized designs{" "}
             </h3>
             <p className="text-slate-300 mt-2">
-              Stop guessing and start ranking. Our ai designs are proven to capture attention.
+              Stop guessing and start ranking. Our ai designs are proven to
+              capture attention.
             </p>
-            <a
-              href="https://prebuiltui.com"
-              className="group flex items-center gap-2 mt-4 text-pink-600 hover:text-pink-700 transition"
+            <Link
+              to="/generate"
+              className="group flex items-center gap-2 mt-4 text-blue-600 hover:text-blue-700 transition"
             >
               Start generating for free
               <ArrowUpRight className="size-5 group-hover:translate-x-0.5 transition duration-300" />
-            </a>
+            </Link>
           </motion.div>
         </div>
       </div>

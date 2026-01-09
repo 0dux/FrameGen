@@ -5,7 +5,7 @@ export default function CTASection() {
   const navigate = useNavigate();
   return (
     <motion.div
-      className="max-w-5xl py-16 mt-40 md:pl-20 md:w-full max-md:mx-4 md:mx-auto flex flex-col md:flex-row max-md:gap-6 items-center justify-between text-left bg-linear-to-b from-pink-900 to-pink-950 rounded-2xl p-6 text-white"
+      className="max-w-5xl py-16 mt-40 md:pl-20 md:w-full max-md:mx-4 md:mx-auto flex flex-col md:flex-row max-md:gap-6 items-center justify-between text-left bg-linear-to-b from-blue-900 to-blue-950 rounded-2xl p-6 text-white"
       initial={{ y: 150, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
@@ -13,7 +13,7 @@ export default function CTASection() {
     >
       <div>
         <motion.h1
-          className="text-4xl md:text-[46px] md:leading-15 font-semibold bg-linear-to-r from-white to-pink-400 text-transparent bg-clip-text"
+          className="text-4xl md:text-[46px] md:leading-15 font-semibold bg-linear-to-r from-white to-blue-400 text-transparent bg-clip-text"
           initial={{ y: 80, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
@@ -22,7 +22,7 @@ export default function CTASection() {
           Ready to go viral on Social Media?
         </motion.h1>
         <motion.p
-          className="bg-linear-to-r from-white to-pink-400 text-transparent bg-clip-text text-lg"
+          className="bg-linear-to-r from-white to-blue-400 text-transparent bg-clip-text text-lg"
           initial={{ y: 80, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
@@ -33,7 +33,7 @@ export default function CTASection() {
       </div>
       <motion.button
         onClick={() => navigate("/generate")}
-        className="px-12 py-3 text-slate-800 bg-white hover:bg-slate-200 rounded-full text-sm mt-4"
+        className="px-12 py-6 hover:scale-105 transition-all duration-500 text-slate-800 bg-white hover:bg-slate-200 rounded-full text-sm mt-4"
         initial={{ y: 80, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true }}
