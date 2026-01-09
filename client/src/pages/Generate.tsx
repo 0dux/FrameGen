@@ -1,13 +1,23 @@
 import { WandSparkles } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import type { IThumbnail } from "../assets/assets";
+import {
+  colorSchemes,
+  type AspectRatio,
+  type IThumbnail,
+  type ThumbnailStyle,
+} from "../assets/assets";
+import AspectRatioSelector from "../components/AspectRatioSelector";
 import SoftBackDrop from "../components/SoftBackDrop";
 
 const Generate = () => {
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
+  const [aspectRatios, setAspectRatios] = useState<AspectRatio>("16:9 ");
+  const [style, setStyle] = useState<ThumbnailStyle>("Bold & Graphic");
+  const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
+  const [colorSchemeId, setColorSchemeId] = useState(colorSchemes[0].id);
   const [thumbnail, setThumbnail] = useState<IThumbnail | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +44,7 @@ const Generate = () => {
                 {/* Input field for generation*/}
                 <div className="space-y-5">
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium">
+                    <label className="block text-sm font-medium text-zinc-200">
                       Title or Topic
                     </label>
                     <input
@@ -45,6 +55,32 @@ const Generate = () => {
                       placeholder="e.g., how to learn to code faster"
                       className="w-full px-4 py-3 rounded-lg border border-white/12 bg-black/20 text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+                    <div className="flex justify-end">
+                      <span className="text-xs text-zinc-400">
+                        {title.length}/100
+                      </span>
+                    </div>
+                  </div>
+                  {/* Aspect ratio Selector */}
+                  <AspectRatioSelector
+                    value={aspectRatios}
+                    onChange={setAspectRatios}
+                  />
+                  {/* Style Selector */}
+                  {/* ColorScheme Selector */}
+                  {/* Additional Details  */}
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-zinc-200">
+                      Additional Details{" "}
+                      <span className="text-zinc-400 text-xs">(optional)</span>
+                    </label>
+                    <textarea
+                      value={additionalDetails}
+                      onChange={(e) => setAdditionalDetails(e.target.value)}
+                      rows={3}
+                      placeholder="Add any extra details you what to be present in the image"
+                      className="w-full px-4 py-3 rounded-lg border border-white/12 bg-black/20 text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    ></textarea>
                   </div>
                 </div>
 
