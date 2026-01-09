@@ -9,6 +9,7 @@ import {
 } from "../assets/assets";
 import AspectRatioSelector from "../components/AspectRatioSelector";
 import ColorSchemeSelector from "../components/ColorSchemeSelector";
+import PreviewPanel from "../components/PreviewPanel";
 import SoftBackDrop from "../components/SoftBackDrop";
 import StyleSelector from "../components/StyleSelector";
 
@@ -16,7 +17,7 @@ const Generate = () => {
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
-  const [aspectRatios, setAspectRatios] = useState<AspectRatio>("16:9 ");
+  const [aspectRatios, setAspectRatios] = useState<AspectRatio>("16:9");
   const [style, setStyle] = useState<ThumbnailStyle>("Bold & Graphic");
   const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
   const [colorSchemeId, setColorSchemeId] = useState(
@@ -108,7 +109,16 @@ const Generate = () => {
             </div>
             {/* right panel */}
             <div>
-              
+              <div className="p-6 rounded-2xl bg-white/8 border border-white/10 shadow-xl">
+                <h2 className="text-lg font-semibold text-zinc-100 mb-4">
+                  Preview
+                </h2>
+                <PreviewPanel
+                  thumbnail={thumbnail}
+                  isLoading={loading}
+                  aspectRatio={aspectRatios}
+                />
+              </div>
             </div>
           </div>
         </main>
