@@ -8,6 +8,7 @@ import {
   type ThumbnailStyle,
 } from "../assets/assets";
 import AspectRatioSelector from "../components/AspectRatioSelector";
+import ColorSchemeSelector from "../components/ColorSchemeSelector";
 import SoftBackDrop from "../components/SoftBackDrop";
 import StyleSelector from "../components/StyleSelector";
 
@@ -18,7 +19,9 @@ const Generate = () => {
   const [aspectRatios, setAspectRatios] = useState<AspectRatio>("16:9 ");
   const [style, setStyle] = useState<ThumbnailStyle>("Bold & Graphic");
   const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
-  const [colorSchemeId, setColorSchemeId] = useState(colorSchemes[0].id);
+  const [colorSchemeId, setColorSchemeId] = useState(
+    colorSchemes[0].id as string
+  );
   const [thumbnail, setThumbnail] = useState<IThumbnail | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -75,6 +78,10 @@ const Generate = () => {
                     setIsOpen={setStyleDropdownOpen}
                   />
                   {/* ColorScheme Selector */}
+                  <ColorSchemeSelector
+                    value={colorSchemeId}
+                    onChange={setColorSchemeId}
+                  />
                   {/* Additional Details  */}
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-zinc-200">
@@ -100,7 +107,9 @@ const Generate = () => {
               </div>
             </div>
             {/* right panel */}
-            <div></div>
+            <div>
+              
+            </div>
           </div>
         </main>
       </div>
