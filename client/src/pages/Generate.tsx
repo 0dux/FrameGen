@@ -1,8 +1,9 @@
 import { WandSparkles } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   colorSchemes,
+  dummyThumbnails,
   type AspectRatio,
   type IThumbnail,
   type ThumbnailStyle,
@@ -25,6 +26,26 @@ const Generate = () => {
   );
   const [thumbnail, setThumbnail] = useState<IThumbnail | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const handleGenerate = async () => {};
+  const fetchThumbnail = async () => {
+    if (id) {
+      const thumbnail: any = dummyThumbnails.find(
+        (thumbnail) => thumbnail._id === id
+      );
+      setThumbnail(thumbnail);
+      setAdditionalDetails(thumbnail.user_prompt);
+      setColorSchemeId(thumbnail.color_scheme);
+      setAspectRatios(thumbnail.aspect_ratio);
+      setTitle(thumbnail.title);
+      setStyle(thumbnail.style);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (id) fetchThumbnail();
+  }, [id]);
 
   return (
     <>
@@ -101,7 +122,10 @@ const Generate = () => {
 
                 {/* Submit Button */}
                 {!id && (
-                  <button className="py-3.5 bg-blue-700 rounded-xl w-full text-sm bg-linear-to-b from-blue-500 to-blue-700 font-medium hover:from-blue-700 transition-colors disabled:cursor-not-allowed duration-200">
+                  <button
+                    onClick={handleGenerate}
+                    className="py-3.5 bg-blue-700 rounded-xl w-full text-sm bg-linear-to-b from-blue-500 to-blue-700 font-medium hover:from-blue-700 transition-colors disabled:cursor-not-allowed duration-200"
+                  >
                     {loading ? "Generating ..." : "Generate"}
                   </button>
                 )}
