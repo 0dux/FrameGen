@@ -71,7 +71,7 @@ export default function FeaturesSection() {
             }}
           >
             <img
-              className="h-full w-auto"
+              className="w-full h-auto object-cover rounded-4xl"
               src="/assets/features-showcase-1.png"
               alt="features showcase"
               width={1000}
