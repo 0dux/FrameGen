@@ -5,6 +5,7 @@ import express, { Request, Response } from 'express';
 import session from "express-session";
 import { connectDB } from "./config/db.js";
 import { env } from "./config/env.js";
+import ThumbnailRouter from "./routes/Thumbnail.routes.js";
 import AuthRouter from "./routes/auth.routes.js";
 
 declare module "express-session" {
@@ -38,7 +39,8 @@ app.get("/", (req: Request, res: Response) => {
         message: "Server is working!!!"
     })
 })
-app.use("/api/v1/auth", AuthRouter)
+app.use("/api/v1/auth", AuthRouter);
+app.use("/api/v1/thumbnail", ThumbnailRouter)
 
 const port = 3000
 

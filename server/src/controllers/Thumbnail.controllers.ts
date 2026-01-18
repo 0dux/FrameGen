@@ -29,7 +29,23 @@ const generateThumbnail = async (req: Request, res: Response) => {
     try {
         const { userId } = req.session;
 
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
         const { title, prompt: user_prompt, style, aspect_ratio, color_scheme, text_overlay } = req.body;
+
+        if (!title || !style) {
+            return res.status(400).json({ message: "Title and style are required" });
+        }
+
+        if (style && !stylePrompts[style as keyof typeof stylePrompts]) {
+            return res.status(400).json({ message: "Invalid style selected" });
+        }
+
+        if (color_scheme && !colorSchemeDescriptions[color_scheme as keyof typeof colorSchemeDescriptions]) {
+            return res.status(400).json({ message: "Invalid color scheme selected" });
+        }
 
         const thumbnail = await Thumbnail.create({
             userId, title, prompt_used: user_prompt, user_prompt, style, aspect_ratio, color_scheme, text_overlay, isGenerating: true,
@@ -86,38 +102,49 @@ const generateThumbnail = async (req: Request, res: Response) => {
 
         for (const part of parts) {
             if (part.inlineData) {
-                finalBuffer = Buffer.from(part.inlineData.data, "base64")
+                finalBuffer = Buffer.from(part.inlineData.data, "base64");
+                break;
             }
         }
+
+        if (!finalBuffer) {
+            throw new Error("No image data received from AI");
+        }
+
         const fileName = `final-output-${Date.now()}.png`;
-        const filePath = path.join("images", fileName);
+        let filePath = path.join("images", fileName);
 
-        //Create images folder
-        fs.mkdirSync("images", { recursive: true });
-        fs.writeFileSync(filePath, finalBuffer!);
+        try {
+            //Create images folder
+            fs.mkdirSync("images", { recursive: true });
+            fs.writeFileSync(filePath, finalBuffer);
 
-        //Upload file
-        const uploadResult = await cloudinary.uploader.upload(filePath, {
-            resource_type: "image",
-            folder: "Frame-Gen-Images"
-        })
+            //Upload file
+            const uploadResult = await cloudinary.uploader.upload(filePath, {
+                resource_type: "image",
+                folder: "Frame-Gen-Images"
+            });
 
-        thumbnail.image_url = uploadResult.url;
-        thumbnail.isGenerating = false;
-        await thumbnail.save();
+            thumbnail.image_url = uploadResult.url;
+            thumbnail.isGenerating = false;
+            await thumbnail.save();
 
-        res.json({
-            message: "Thumbnail Generated", thumbnail
-        })
-
-        //Delete file once uploaded
-        fs.unlinkSync(filePath);
-        return;
+            res.json({
+                message: "Thumbnail Generated", thumbnail
+            });
+        } finally {
+            //Delete file once uploaded or if error occurred
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        }
     } catch (error: any) {
         console.error(error);
         return res.status(500).json({
             message: error.message
-        })
-
+        });
     }
 }
+
+export { generateThumbnail };
+
