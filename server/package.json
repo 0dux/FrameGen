@@ -25,6 +25,7 @@
   "dependencies": {
     "@google/genai": "^1.37.0",
     "bcrypt": "^6.0.0",
+    "cloudinary": "^2.9.0",
     "connect-mongo": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",

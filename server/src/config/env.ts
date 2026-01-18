@@ -6,6 +6,8 @@ const envSchema = z.object({
     MONGODB_URI: z.string(),
     SESSION_SECRET: z.string(),
     GEMINI_API_KEY: z.string(),
+    CLOUDINARY_URL: z.string(),
+
 })
 
 const result = envSchema.safeParse(process.env);
