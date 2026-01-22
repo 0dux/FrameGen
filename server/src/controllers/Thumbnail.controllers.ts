@@ -50,12 +50,12 @@ const generateThumbnail = async (req: Request, res: Response) => {
         const thumbnail = await Thumbnail.create({
             userId, title, prompt_used: user_prompt, user_prompt, style, aspect_ratio, color_scheme, text_overlay, isGenerating: true,
         })
-
-        const model = "gemini-2.5-flash-image";
+        //model -------------------------------------------------------------------------------------------
+        const model = "gemini-3-pro-image-preview";
 
         //Configuration for the image to be generated
         const generationConfig: GenerateContentConfig = {
-            maxOutputTokens: 32768,
+            maxOutputTokens: 8192,
             temperature: 1,
             topP: 0.95,
             responseModalities: ["IMAGE"],
@@ -72,7 +72,7 @@ const generateThumbnail = async (req: Request, res: Response) => {
         }
 
         //Prompt for the image
-        let prompt = `Create a ${stylePrompts[style as keyof typeof stylePrompts]} for ${title}`;
+        let prompt = `Create a ${stylePrompts[style as keyof typeof stylePrompts]} image for: ${title}`;
 
         if (color_scheme) {
             prompt += `Use a ${colorSchemeDescriptions[color_scheme as keyof typeof colorSchemeDescriptions]} color scheme.`
@@ -87,7 +87,7 @@ const generateThumbnail = async (req: Request, res: Response) => {
         //Image generation using prompt
         const response: any = await ai.models.generateContent({
             model,
-            contents: [prompt],
+            contents: [{ text: prompt }],
             config: generationConfig,
         })
 
@@ -122,7 +122,8 @@ const generateThumbnail = async (req: Request, res: Response) => {
             //Upload file
             const uploadResult = await cloudinary.uploader.upload(filePath, {
                 resource_type: "image",
-                folder: "Frame-Gen-Images"
+                folder: "Frame-Gen-Images",
+                // use_filename: true, how to save with a filename.
             });
 
             thumbnail.image_url = uploadResult.url;
@@ -138,6 +139,21 @@ const generateThumbnail = async (req: Request, res: Response) => {
                 fs.unlinkSync(filePath);
             }
         }
+    } catch (error: any) {
+        console.error(error);
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
+
+export const deleteThumbnail = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { userId } = req.session;
+
+        await Thumbnail.findByIdAndDelete({ _id: id, userId });
     } catch (error: any) {
         console.error(error);
         return res.status(500).json({

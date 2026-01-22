@@ -5,8 +5,9 @@ import express, { Request, Response } from 'express';
 import session from "express-session";
 import { connectDB } from "./config/db.js";
 import { env } from "./config/env.js";
+import AuthRouter from "./routes/Auth.routes.js";
 import ThumbnailRouter from "./routes/Thumbnail.routes.js";
-import AuthRouter from "./routes/auth.routes.js";
+import UserRouter from "./routes/User.routes.js";
 
 declare module "express-session" {
     interface SessionData {
@@ -41,6 +42,7 @@ app.get("/", (req: Request, res: Response) => {
 })
 app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/thumbnail", ThumbnailRouter)
+app.use("/api/v1/user", UserRouter)
 
 const port = 3000
 
