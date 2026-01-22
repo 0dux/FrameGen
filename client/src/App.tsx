@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 import LenisScroll from "./components/LenisScroll";
@@ -16,6 +17,7 @@ export default function App() {
   useEffect(() => window.scroll(0, 0), [pathname]);
   return (
     <>
+      <Toaster />
       <LenisScroll />
       <Navbar />
       <Routes>
