@@ -33,7 +33,13 @@ const generateThumbnail = async (req: Request, res: Response) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        const { title, prompt: user_prompt, style, aspect_ratio, color_scheme } = req.body;
+        const {
+            title,
+            prompt: user_prompt,
+            style,
+            aspect_ratio,
+            color_scheme,
+            text_overlay } = req.body;
 
         if (!title || !style) {
             return res.status(400).json({ message: "Title and style are required" });
@@ -48,7 +54,7 @@ const generateThumbnail = async (req: Request, res: Response) => {
         }
 
         const thumbnail = await Thumbnail.create({
-            userId, title, prompt_used: user_prompt, user_prompt, style, aspect_ratio, color_scheme, isGenerating: true,
+            userId, title, prompt_used: user_prompt, text_overlay, user_prompt, style, aspect_ratio, color_scheme, isGenerating: true,
         })
         //model -------------------------------------------------------------------------------------------
         const model = "gemini-3-pro-image-preview";
@@ -91,9 +97,27 @@ const generateThumbnail = async (req: Request, res: Response) => {
             config: generationConfig,
         })
 
+        //Log response for debugging
+        // console.log("AI Response:", JSON.stringify(response, null, 2));
+
         //Response validity check
-        if (!response?.candidates[0]?.content?.parts) {
-            throw new Error("Unknown response recieved.");
+        if (!response?.candidates || response.candidates.length === 0) {
+            console.error("No candidates in response");
+            const blockReason = response?.promptFeedback?.blockReason;
+            const safetyRatings = response?.promptFeedback?.safetyRatings;
+
+            thumbnail.isGenerating = false;
+            await thumbnail.save();
+
+            if (blockReason) {
+                throw new Error(`Content blocked by AI safety filters. Reason: ${blockReason}. Try rephrasing your prompt or choosing a different style.`);
+            }
+            throw new Error("AI did not generate any content. Please try again with a different prompt.");
+        }
+
+        if (!response.candidates[0]?.content?.parts) {
+            console.error("Invalid response structure:", response.candidates[0]);
+            throw new Error("Invalid response structure from AI");
         }
 
         const parts = response.candidates[0].content.parts;

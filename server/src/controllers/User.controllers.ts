@@ -25,7 +25,7 @@ export const getThumbnailById = async (req: Request, res: Response) => {
         const { userId } = req.session;
 
         const thumbnail = await Thumbnail.findOne({ _id: id, userId })
-        res.json(
+        return res.json(
             thumbnail
         )
     } catch (error: any) {
