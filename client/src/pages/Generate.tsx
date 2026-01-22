@@ -1,9 +1,9 @@
 import { WandSparkles } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   colorSchemes,
-  dummyThumbnails,
   type AspectRatio,
   type IThumbnail,
   type ThumbnailStyle,
@@ -13,39 +13,95 @@ import ColorSchemeSelector from "../components/ColorSchemeSelector";
 import PreviewPanel from "../components/PreviewPanel";
 import SoftBackDrop from "../components/SoftBackDrop";
 import StyleSelector from "../components/StyleSelector";
+import api from "../configs/api";
+import { useAuth } from "../context/AuthContext";
 
 const Generate = () => {
   const { id } = useParams();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const [title, setTitle] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
   const [aspectRatios, setAspectRatios] = useState<AspectRatio>("16:9");
   const [style, setStyle] = useState<ThumbnailStyle>("Bold & Graphic");
   const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
   const [colorSchemeId, setColorSchemeId] = useState(
-    colorSchemes[0].id as string
+    colorSchemes[0].id as string,
   );
   const [thumbnail, setThumbnail] = useState<IThumbnail | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleGenerate = async () => {};
+  //Generate the thumbnail
+  const handleGenerate = async () => {
+    if (!isLoggedIn) {
+      return toast.error("Please login to generate thumbnails.");
+    }
+    if (!title.trim()) {
+      return toast.error("Title is required!");
+    }
+    setLoading(true);
+    const api_payload = {
+      title,
+      prompt: additionalDetails,
+      style,
+      aspect_ratio: aspectRatios,
+      color_scheme: colorSchemeId,
+      text_overlay: true,
+    };
+    const { data } = await api.post("/api/v1/thumbnail/generate", api_payload);
+    if (data.thumbnail) {
+      navigate("/generate/" + data.thumbnail._id);
+      toast.success(data.message);
+    }
+  };
+
+  //fetch the thumbnail
   const fetchThumbnail = async () => {
-    if (id) {
-      const thumbnail: any = dummyThumbnails.find(
-        (thumbnail) => thumbnail._id === id
+    try {
+      const { data } = await api.get(`/api/v1/user/thumbnail/${id}`);
+
+      // Check if response is wrapped or direct
+      const thumbnailData = data?.thumbnail || data;
+
+      console.log("Setting thumbnail data:", thumbnailData);
+
+      setThumbnail(thumbnailData as IThumbnail);
+      setTitle(thumbnailData?.title);
+      setAspectRatios(thumbnailData?.aspect_ratio);
+      setStyle(thumbnailData?.style);
+      setColorSchemeId(thumbnailData?.color_scheme);
+      setAdditionalDetails(thumbnailData?.user_prompt);
+
+      // Only stop loading if we have the image
+      if (thumbnailData?.image_url || !thumbnailData?.isGenerating) {
+        setLoading(false);
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast.error(
+        error?.response?.data?.message ||
+          "Some error has occured during generation",
       );
-      setThumbnail(thumbnail);
-      setAdditionalDetails(thumbnail.user_prompt);
-      setColorSchemeId(thumbnail.color_scheme);
-      setAspectRatios(thumbnail.aspect_ratio);
-      setTitle(thumbnail.title);
-      setStyle(thumbnail.style);
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (id) fetchThumbnail();
-  }, [id]);
+    if (isLoggedIn && id) fetchThumbnail();
+    if (isLoggedIn && id && loading) {
+      const interval = setInterval(() => {
+        fetchThumbnail();
+      }, 6000);
+      return () => clearInterval(interval);
+    }
+  }, [id, isLoggedIn, loading]);
+
+  useEffect(() => {
+    if (!id && thumbnail) {
+      setThumbnail(null);
+    }
+  }, [pathname]);
 
   return (
     <>
