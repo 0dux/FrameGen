@@ -33,7 +33,7 @@ const generateThumbnail = async (req: Request, res: Response) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        const { title, prompt: user_prompt, style, aspect_ratio, color_scheme, text_overlay } = req.body;
+        const { title, prompt: user_prompt, style, aspect_ratio, color_scheme } = req.body;
 
         if (!title || !style) {
             return res.status(400).json({ message: "Title and style are required" });
@@ -48,7 +48,7 @@ const generateThumbnail = async (req: Request, res: Response) => {
         }
 
         const thumbnail = await Thumbnail.create({
-            userId, title, prompt_used: user_prompt, user_prompt, style, aspect_ratio, color_scheme, text_overlay, isGenerating: true,
+            userId, title, prompt_used: user_prompt, user_prompt, style, aspect_ratio, color_scheme, isGenerating: true,
         })
         //model -------------------------------------------------------------------------------------------
         const model = "gemini-3-pro-image-preview";
