@@ -31,6 +31,7 @@ const Generate = () => {
   );
   const [thumbnail, setThumbnail] = useState<IThumbnail | null>(null);
   const [loading, setLoading] = useState(false);
+  const [fetchAttempts, setFetchAttempts] = useState(0);
 
   //Generate the thumbnail
   const handleGenerate = async () => {
@@ -88,15 +89,34 @@ const Generate = () => {
   };
 
   useEffect(() => {
-    if (isLoggedIn && id) fetchThumbnail();
-    if (isLoggedIn && id && loading) {
+    if (isLoggedIn && id) {
+      fetchThumbnail();
+      setFetchAttempts(0); // Reset attempts on new id
+    }
+  }, [id, isLoggedIn]);
+
+  //Whenever a thumbnail exists it is requested from the backend for 3 times only.
+  useEffect(() => {
+    if (isLoggedIn && id && loading && fetchAttempts < 3) {
       const interval = setInterval(() => {
-        fetchThumbnail();
-      }, 6000);
+        setFetchAttempts((prev) => {
+          const newAttempts = prev + 1;
+          if (newAttempts >= 3) {
+            setLoading(false);
+            toast.error(
+              "Thumbnail generation is taking longer than expected. Please try again later.",
+            );
+          } else {
+            fetchThumbnail();
+          }
+          return newAttempts;
+        });
+      }, 5 * 1000);
       return () => clearInterval(interval);
     }
-  }, [id, isLoggedIn, loading]);
+  }, [id, isLoggedIn, loading, fetchAttempts]);
 
+  //Whenever the pathname changes the thumbnail disappears
   useEffect(() => {
     if (!id && thumbnail) {
       setThumbnail(null);
