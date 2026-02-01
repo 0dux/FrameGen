@@ -1,4 +1,10 @@
-import { ArrowUpRight, DownloadIcon, Trash2Icon } from "lucide-react";
+import {
+  ArrowUpRight,
+  DownloadIcon,
+  Eye,
+  EyeClosed,
+  Trash2Icon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,6 +25,32 @@ const MyGeneration = () => {
 
   const [loading, setLoading] = useState(false);
   const [thumbnails, setThumbnails] = useState<IThumbnail[]>([]);
+
+  const togglePublish = async (thumbnailId: string) => {
+    try {
+      const { data } = await api.get(
+        `/api/v1/thumbnail/toggle-published/${thumbnailId}`,
+      );
+      // Update the local state with the toggled value
+      setThumbnails((prev) =>
+        prev.map((t) =>
+          t._id === thumbnailId
+            ? {
+                ...t,
+                isPublished: data.thumbnail?.isPublished ?? !t.isPublished,
+              }
+            : t,
+        ),
+      );
+      toast.success(data.message || "Publish status updated");
+    } catch (error: any) {
+      console.error(error.response?.data?.message || error.message);
+      toast.error(
+        error?.response?.data?.message ||
+          "Some error has occurred during toggling publish status",
+      );
+    }
+  };
 
   const fetchThumbnail = async () => {
     try {
@@ -61,6 +93,7 @@ const MyGeneration = () => {
       );
     }
   };
+
   useEffect(() => {
     if (isLoggedIn) {
       fetchThumbnail();
@@ -105,6 +138,8 @@ const MyGeneration = () => {
             {thumbnails.map((thumb: IThumbnail) => {
               const aspectClass =
                 aspectRatioClassMap[thumb.aspect_ratio || "16:9"];
+              // console.log(thumb._id);
+
               return (
                 <div
                   key={thumb._id}
@@ -152,6 +187,24 @@ const MyGeneration = () => {
                       {new Date(thumb.createdAt!).toDateString()}
                     </p>
                   </div>
+
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => togglePublish(thumb._id)}
+                      className="absolute bottom-12 right-1 cursor-pointer"
+                    >
+                      {thumb.isPublished ? (
+                        <div className="flex gap-2 items-center bg-linear-to-br from-blue-500 to-blue-800 hover:bg-linear-to-tl hover:from-blue-500 hover:to-blue-800 transition-colors duration-300 rounded-2xl px-2 py-1">
+                          <Eye /> Published
+                        </div>
+                      ) : (
+                        <div className="flex gap-2 items-center bg-linear-to-br from-indigo-500 to-indigo-800 hover:bg-linear-to-tl hover:from-indigo-500 hover:to-indigo-800 transition-colors duration-300 rounded-2xl px-2 py-1">
+                          <EyeClosed /> Unpublished
+                        </div>
+                      )}
+                    </button>
+                  </div>
+
                   {/* Options, Download, Delete, etc... */}
                   <div
                     onClick={(e) => e.stopPropagation()}

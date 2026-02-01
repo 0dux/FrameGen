@@ -36,6 +36,7 @@ export interface IThumbnail {
     _id: string;
     userId: string;
     title: string;
+    isPublished:boolean;
     description?: string;
     style: "Bold & Graphic" | "Tech/Futuristic" | "Minimalist" | "Photorealistic" | "Illustrated";
     aspect_ratio?: "16:9" | "1:1" | "9:16";

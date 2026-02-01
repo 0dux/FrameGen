@@ -53,10 +53,10 @@ export default function Navbar() {
             </Link>
           )}
           <Link
-            to={"/#contact-us"}
+            to={"/community"}
             className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
           >
-            Contact Us
+            Community
           </Link>
         </div>
 
@@ -128,10 +128,10 @@ export default function Navbar() {
         )}
         <Link
           onClick={() => setIsOpen(false)}
-          to={"/#contact-us"}
+          to={"/community"}
           className="hover:text-blue-500 hover:font-medium active:scale-95 transition-all duration-200 overflow-hidden"
         >
-          Contact Us
+          Community
         </Link>
         {isLoggedIn ? (
           <button

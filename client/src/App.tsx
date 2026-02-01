@@ -6,6 +6,7 @@ import LenisScroll from "./components/LenisScroll";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import "./globals.css";
+import Community from "./pages/Community";
 import Generate from "./pages/Generate";
 import HomePage from "./pages/HomePage";
 import MyGeneration from "./pages/MyGeneration";
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/my-generation" element={<MyGeneration />} />
         <Route path="/preview" element={<YtPreview />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/community" element={<Community />} />
       </Routes>
       <Footer />
     </>

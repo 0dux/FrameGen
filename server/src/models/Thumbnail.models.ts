@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
+import { required } from "zod/mini";
 
 
 export interface IThumbnail extends Document {
     _id: string;
     userId: string;
     title: string;
+    isPublished: boolean;
     description?: string;
     style: "Bold & Graphic" | "Tech/Futuristic" | "Minimalist" | "Photorealistic" | "Illustrated";
     aspect_ratio?: "16:9" | "1:1" | "9:16";
@@ -21,6 +23,7 @@ export interface IThumbnail extends Document {
 const ThumbnailSchema = new mongoose.Schema<IThumbnail>({
     userId: { type: String, ref: "User", required: true, },
     title: { type: String, trim: true, required: true, },
+    isPublished: { type: Boolean, default: false, required: true },
     description: { type: String, trim: true, },
     style: { type: String, required: true, enum: ["Bold & Graphic", "Tech/Futuristic", "Minimalist", "Photorealistic", "Illustrated"] },
     aspect_ratio: { type: String, enum: ["16:9", "1:1", "9:16"], default: "16:9" },

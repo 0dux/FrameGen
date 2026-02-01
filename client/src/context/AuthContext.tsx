@@ -107,7 +107,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //Fetch User on render
   const fetchUser = async () => {
     try {
-      const { data } = await api.post("/api/v1/auth/verify");
+      const { data } = await api.get("/api/v1/auth/verify");
       if (data.user) {
         setUser(data.user as IUser);
         setIsLoggedIn(true);

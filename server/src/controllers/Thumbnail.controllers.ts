@@ -25,7 +25,7 @@ const colorSchemeDescriptions = {
     pastel: 'soft pastel colors, low saturation, gentle tones, calm and friendly aesthetic',
 }
 
-const generateThumbnail = async (req: Request, res: Response) => {
+export const generateThumbnail = async (req: Request, res: Response) => {
     try {
         const { userId } = req.session;
 
@@ -147,7 +147,7 @@ const generateThumbnail = async (req: Request, res: Response) => {
             const uploadResult = await cloudinary.uploader.upload(filePath, {
                 resource_type: "image",
                 folder: "Frame-Gen-Images",
-                // use_filename: true, how to save with a filename.
+                // use_filename: true, 
             });
 
             thumbnail.image_url = uploadResult.url;
@@ -171,7 +171,6 @@ const generateThumbnail = async (req: Request, res: Response) => {
     }
 }
 
-
 export const deleteThumbnail = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -186,5 +185,45 @@ export const deleteThumbnail = async (req: Request, res: Response) => {
     }
 }
 
-export { generateThumbnail };
+export const togglePublished = async (req: Request, res: Response) => {
+    try {
+        const { thumbnailId } = req.params;
+        const { userId } = req.session;
 
+        const thumbnail = await Thumbnail.findOne({ _id: thumbnailId, userId });
+        if (!thumbnail) {
+            return res.status(404).json({
+                message: "Thumbnail not found!"
+            })
+        }
+        thumbnail.isPublished = !thumbnail.isPublished;
+        await thumbnail.save();
+        return res.json({
+            thumbnail
+        })
+    } catch (error: any) {
+        console.error(error);
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
+export const getPublishedThumbnails = async (req: Request, res: Response) => {
+    try {
+        const thumbnails = await Thumbnail.find({ isPublished: true });
+        if (!thumbnails) {
+            return res.status(404).json({
+                message: "No one has published any thumbnails yet"
+            })
+        }
+        res.json({
+            thumbnails
+        })
+    } catch (error: any) {
+        console.error(error);
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+}
