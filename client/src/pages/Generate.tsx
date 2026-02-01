@@ -35,25 +35,34 @@ const Generate = () => {
 
   //Generate the thumbnail
   const handleGenerate = async () => {
-    if (!isLoggedIn) {
-      return toast.error("Please login to generate thumbnails.");
-    }
-    if (!title.trim()) {
-      return toast.error("Title is required!");
-    }
-    setLoading(true);
-    const api_payload = {
-      title,
-      prompt: additionalDetails,
-      style,
-      aspect_ratio: aspectRatios,
-      color_scheme: colorSchemeId,
-      text_overlay: true,
-    };
-    const { data } = await api.post("/api/v1/thumbnail/generate", api_payload);
-    if (data.thumbnail) {
-      navigate("/generate/" + data.thumbnail._id);
-      toast.success(data.message);
+    try {
+      if (!isLoggedIn) {
+        return toast.error("Please login to generate thumbnails.");
+      }
+      if (!title.trim()) {
+        return toast.error("Title is required!");
+      }
+      setLoading(true);
+      const api_payload = {
+        title,
+        prompt: additionalDetails,
+        style,
+        aspect_ratio: aspectRatios,
+        color_scheme: colorSchemeId,
+        text_overlay: true,
+      };
+      const { data } = await api.post(
+        "/api/v1/thumbnail/generate",
+        api_payload,
+      );
+      if (data.thumbnail) {
+        navigate("/generate/" + data.thumbnail._id);
+        toast.success(data.message);
+      }
+    } catch (error: any) {
+      setLoading(false);
+      console.error(error.message);
+      toast.error(error?.response?.data?.message || error.message);
     }
   };
 
