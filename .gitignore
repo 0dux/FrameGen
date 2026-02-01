@@ -40,3 +40,4 @@ lerna-debug.log*
 # Vercel / Render / Netlify (Deployment caches)
 .vercel
 .netlify
+*-development-notes.md
