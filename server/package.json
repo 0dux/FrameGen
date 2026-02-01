@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "tsx ./src/server.ts",
-    "dev": "nodemon --exec tsx ./src/server.ts",
+    "server": "nodemon --exec tsx ./src/server.ts",
     "build": "tsc"
   },
   "keywords": [],
