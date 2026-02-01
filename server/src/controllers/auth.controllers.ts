@@ -155,7 +155,11 @@ export const verifyUser = async (req: Request, res: Response) => {
         }
 
         return res.json({
-            user
+            user: {
+                name: user.name,
+                email: user.email
+            },
+            message: "User verified"
         })
 
     } catch (error: any) {
