@@ -20,7 +20,7 @@ const Generate = () => {
   const { id } = useParams();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, refreshCredits } = useAuth();
   const [title, setTitle] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
   const [aspectRatios, setAspectRatios] = useState<AspectRatio>("16:9");
@@ -58,6 +58,7 @@ const Generate = () => {
       if (data.thumbnail) {
         navigate("/generate/" + data.thumbnail._id);
         toast.success(data.message);
+        await refreshCredits();
       }
     } catch (error: any) {
       setLoading(false);

@@ -1,33 +1,14 @@
 import { MenuIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../configs/api";
 import { useAuth } from "../context/AuthContext";
 import SvgLogo from "./SvgLogo";
 
 export default function Navbar() {
-  const { isLoggedIn, user, logout } = useAuth();
+  const { isLoggedIn, user, logout, credits } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const [Credits, setCredits] = useState(user?.credits);
   const navigate = useNavigate();
-  const getCredits = async () => {
-    try {
-      const { data } = await api.get("/api/v1/user/credits");
-      setCredits(data.credits);
-    } catch (error: any) {
-      console.error(error);
-      toast.error(
-        error?.response?.data?.message ||
-          "Some error has occured during fetching credits",
-      );
-    }
-  };
-
-  useEffect(() => {
-    getCredits();
-  }, []);
   return (
     <>
       <motion.nav
@@ -83,7 +64,7 @@ export default function Navbar() {
           {isLoggedIn ? (
             <>
               <div className="px-4 py-1.5 bg-white/10 rounded-3xl border border-white/40">
-                Credits: <span className="text-yellow-500">{Credits}</span>
+                Credits: <span className="text-yellow-500">{credits}</span>
               </div>
               <div className="relative group">
                 <button className="rounded-full size-8 bg-white/30 border-2 border-white/10">

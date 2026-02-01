@@ -8,6 +8,8 @@ interface AuthContextProps {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   user: IUser | null;
   setUser: (user: IUser | null) => void;
+  credits: number | null;
+  refreshCredits: () => Promise<void>;
   signUp: (user: {
     name: string;
     email: string;
@@ -22,6 +24,8 @@ const AuthContext = createContext<AuthContextProps>({
   setIsLoggedIn: () => {},
   user: null,
   setUser: () => {},
+  credits: null,
+  refreshCredits: async () => {},
   signUp: async () => {},
   login: async () => {},
   logout: async () => {},
@@ -30,6 +34,17 @@ const AuthContext = createContext<AuthContextProps>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [credits, setCredits] = useState<number | null>(null);
+
+  // Refresh Credits
+  const refreshCredits = async () => {
+    try {
+      const { data } = await api.get("/api/v1/user/credits");
+      setCredits(data.credits);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
 
   //Sign-up User
   const signUp = async ({
@@ -79,6 +94,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (data.user) {
         setUser(data.user as IUser);
         setIsLoggedIn(true);
+        await refreshCredits();
       }
       toast.success(data.message);
     } catch (error: any) {
@@ -95,6 +111,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const { data } = await api.post("/api/v1/auth/logout");
       setUser(null);
       setIsLoggedIn(false);
+      setCredits(null);
       toast.success(data.message);
     } catch (error: any) {
       console.error(error);
@@ -111,6 +128,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (data.user) {
         setUser(data.user as IUser);
         setIsLoggedIn(true);
+        await refreshCredits();
       }
     } catch (error) {
       console.error(error);
@@ -128,6 +146,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser,
     isLoggedIn,
     setIsLoggedIn,
+    credits,
+    refreshCredits,
     signUp,
     login,
     logout,
