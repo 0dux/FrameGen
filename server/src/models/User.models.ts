@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
+import { number } from "zod";
+import { required } from "zod/mini";
 
 export interface IUser {
     name: string,
     email: string,
+    credits: number,
     password?: string,
     createdAt?: string,
     updatedAt?: string,
@@ -25,6 +28,10 @@ const UserSchema = new mongoose.Schema<IUser>({
         type: String,
         required: true,
         trim: true,
+    },
+    credits: {
+        type: Number,
+        required: true,
     }
 }, { timestamps: true })
 

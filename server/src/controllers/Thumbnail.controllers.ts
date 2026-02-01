@@ -5,6 +5,7 @@ import fs from "fs";
 import path from "path";
 import ai from "../config/ai.js";
 import Thumbnail from "../models/Thumbnail.models.js";
+import User from "../models/User.models.js";
 
 const stylePrompts = {
     'Bold & Graphic': 'eye-catching thumbnail, bold typography, vibrant colors, expressive facial reaction, dramatic lighting, high contrast, click-worthy composition, professional style',
@@ -51,6 +52,25 @@ export const generateThumbnail = async (req: Request, res: Response) => {
 
         if (color_scheme && !colorSchemeDescriptions[color_scheme as keyof typeof colorSchemeDescriptions]) {
             return res.status(400).json({ message: "Invalid color scheme selected" });
+        }
+
+        // Atomic check and deduct credits - prevents race conditions
+        const user = await User.findOneAndUpdate(
+            { _id: userId, credits: { $gte: 5 } },
+            { $inc: { credits: -5 } },
+            { new: true }
+        );
+
+        if (!user) {
+            const existingUser = await User.findById(userId);
+            if (!existingUser) {
+                return res.status(401).json({
+                    message: "User not found, please login again."
+                });
+            }
+            return res.status(402).json({
+                message: "Insufficient credits"
+            });
         }
 
         const thumbnail = await Thumbnail.create({
@@ -165,6 +185,11 @@ export const generateThumbnail = async (req: Request, res: Response) => {
         }
     } catch (error: any) {
         console.error(error);
+        // Refund credits on failure
+        const { userId } = req.session;
+        if (userId) {
+            await User.findByIdAndUpdate(userId, { $inc: { credits: 5 } });
+        }
         return res.status(500).json({
             message: error.message
         });

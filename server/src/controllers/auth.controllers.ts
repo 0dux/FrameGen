@@ -37,7 +37,7 @@ export const registerUser = async (req: Request, res: Response) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPwd = await bcrypt.hash(password as string, salt);
 
-        const newUser = new User({ name, email, password: hashedPwd });
+        const newUser = new User({ name, email, password: hashedPwd, credits: 20 });
         await newUser.save();
 
         //Setup user session
@@ -157,7 +157,8 @@ export const verifyUser = async (req: Request, res: Response) => {
         return res.json({
             user: {
                 name: user.name,
-                email: user.email
+                email: user.email,
+                credits: user.credits
             },
             message: "User verified"
         })

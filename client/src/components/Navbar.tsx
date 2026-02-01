@@ -62,21 +62,26 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2">
           {isLoggedIn ? (
-            <div className="relative group">
-              <button className="rounded-full size-8 bg-white/20 border-2 border-white/10">
-                {user?.name.charAt(0).toUpperCase()}
-              </button>
-              <div className="absolute hidden group-hover:block top-6 right-0 pt-4">
-                <button
-                  onClick={() => {
-                    logout();
-                  }}
-                  className="bg-white/20 border-2 border-white/10 px-5 py-1.5 rounded hover:bg-white/10 transition"
-                >
-                  Logout
-                </button>
+            <>
+              <div className="px-4 py-1.5 bg-white/10 rounded-3xl border border-white/40">
+                Credits: <span className="text-yellow-500">{user?.credits}</span>
               </div>
-            </div>
+              <div className="relative group">
+                <button className="rounded-full size-8 bg-white/30 border-2 border-white/10">
+                  {user?.name.charAt(0).toUpperCase()}
+                </button>
+                <div className="absolute hidden group-hover:block top-6 right-0 pt-4">
+                  <button
+                    onClick={() => {
+                      logout();
+                    }}
+                    className="bg-white/20 border-2 border-white/10 px-5 py-1.5 rounded hover:bg-white/10 transition"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            </>
           ) : (
             <button
               onClick={() => navigate("/login")}
