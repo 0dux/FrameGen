@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import SoftBackDrop from "./SoftBackDrop";
@@ -14,7 +14,7 @@ const Login = () => {
     password: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -49,7 +49,13 @@ const Login = () => {
           <p className="text-gray-400 text-sm mt-2">
             Please sign in to continue
           </p>
+          {/* Login using google button */}
 
+          <div className="flex items-center justify-center gap-2 mt-4">
+            <div className="h-px bg-white/10 w-1/4"></div> Or{" "}
+            {state === "login" ? "Login" : "Sign up"} using{" "}
+            <div className="h-px bg-white/10 w-1/4"></div>
+          </div>
           {state !== "login" && (
             <div className="flex items-center mt-6 w-full bg-white/5 ring-2 ring-white/10 focus-within:ring-blue-500/60 h-12 rounded-full overflow-hidden pl-6 gap-2 transition-all ">
               <svg
@@ -108,7 +114,7 @@ const Login = () => {
             />
           </div>
 
-          <div className=" flex items-center mt-4 w-full bg-white/5 ring-2 ring-white/10 focus-within:ring-blue-500/60 h-12 rounded-full overflow-hidden pl-6 gap-2 transition-all ">
+          <div className=" flex items-center mt-4 mb-4 w-full bg-white/5 ring-2 ring-white/10 focus-within:ring-blue-500/60 h-12 rounded-full overflow-hidden pl-6 gap-2 transition-all ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="14"
@@ -135,13 +141,6 @@ const Login = () => {
               required
             />
           </div>
-
-          <div className="mt-4 text-left">
-            <button className="text-sm text-blue-400 hover:underline">
-              Forget password?
-            </button>
-          </div>
-
           <button
             type="submit"
             className="mt-2 w-full h-11 rounded-full text-white bg-blue-600 hover:bg-blue-500 transition "

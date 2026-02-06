@@ -41,3 +41,4 @@ lerna-debug.log*
 .vercel
 .netlify
 *-development-notes.md
+client_secret.json
