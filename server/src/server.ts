@@ -6,6 +6,7 @@ import session from "express-session";
 import { connectDB } from "./config/db.js";
 import { env } from "./config/env.js";
 import AuthRouter from "./routes/Auth.routes.js";
+import googleRouter from "./routes/GoogleOAuth.routes.js";
 import ThumbnailRouter from "./routes/Thumbnail.routes.js";
 import UserRouter from "./routes/User.routes.js";
 
@@ -46,7 +47,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/thumbnail", ThumbnailRouter)
 app.use("/api/v1/user", UserRouter)
-app.use("/api/v1/googleOAuth")
+app.use("/api/v1/googleOAuth", googleRouter)
 
 const port = 3000
 

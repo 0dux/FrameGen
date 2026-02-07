@@ -4,7 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import SoftBackDrop from "./SoftBackDrop";
 
 const Login = () => {
-  const { user, login, signUp } = useAuth();
+  const { user, login, signUp, setUser, setIsLoggedIn, refreshCredits } =
+    useAuth();
   const navigate = useNavigate();
   const [state, setState] = useState("login");
 
@@ -26,6 +27,11 @@ const Login = () => {
     } else {
       signUp(formData);
     }
+  };
+
+  // Google Login - must use full page redirect, not AJAX
+  const googleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_BASE_URL || "http://localhost:3000"}/api/v1/googleOAuth/login`;
   };
 
   useEffect(() => {
@@ -50,7 +56,14 @@ const Login = () => {
             Please sign in to continue
           </p>
           {/* Login using google button */}
-
+          <button
+            type="button"
+            onClick={googleLogin}
+            className="mt-4 bg-zinc-800 w-full py-3 font-medium rounded-full flex items-center justify-center gap-2 hover:bg-zinc-700 transition-all"
+          >
+            <p>Continue using Google</p>
+            <img src="/Google__G__logo.svg" />
+          </button>
           <div className="flex items-center justify-center gap-2 mt-4">
             <div className="h-px bg-white/10 w-1/4"></div> Or{" "}
             {state === "login" ? "Login" : "Sign up"} using{" "}

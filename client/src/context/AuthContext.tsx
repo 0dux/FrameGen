@@ -89,7 +89,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email,
         password,
       });
-      console.log(data);
 
       if (data.user) {
         setUser(data.user as IUser);
@@ -129,6 +128,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(data.user as IUser);
         setIsLoggedIn(true);
         await refreshCredits();
+        // console.log(data);
       }
     } catch (error) {
       console.error(error);

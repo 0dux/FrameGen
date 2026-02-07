@@ -7,4 +7,6 @@ const oauth2Client = new google.auth.OAuth2(
     env.GOOGLE_OAUTH_REDIRECT_URL
 );
 
+// console.log(env.GOOGLE_OAUTH_REDIRECT_URL);
+
 export default oauth2Client

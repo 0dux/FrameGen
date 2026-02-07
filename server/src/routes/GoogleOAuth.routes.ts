@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { googleCallback, googleLogin } from "../controllers/GoogleOAuth.controllers.js";
 
-const google = Router();
+const googleRouter = Router();
 
-google.get("/login", googleLogin);
-google.get("/callback", googleCallback);
+googleRouter.get("/login", googleLogin);
+googleRouter.get("/callback", googleCallback);
 
-export default google
+export default googleRouter
