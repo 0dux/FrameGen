@@ -5,11 +5,8 @@ import { Link } from "react-router-dom";
 import { type IThumbnail } from "../assets/assets";
 import SoftBackDrop from "../components/SoftBackDrop";
 import api from "../configs/api";
-import { useAuth } from "../context/AuthContext";
 
 const Community = () => {
-  const { isLoggedIn } = useAuth();
-
   const aspectRatioClassMap: Record<string, string> = {
     "16:9": "aspect-video",
     "1:1": "aspect-square",
