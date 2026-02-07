@@ -10,6 +10,7 @@ const envSchema = z.object({
     GOOGLE_OAUTH_CLIENT_ID: z.string(),
     GOOGLE_OAUTH_CLIENT_SECRET: z.string(),
     GOOGLE_OAUTH_REDIRECT_URL: z.string(),
+    CLIENT_URL: z.string(),
 })
 
 const result = envSchema.safeParse(process.env);

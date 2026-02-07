@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema<IUser>({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
     },
     credits: {
