@@ -4,8 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import SoftBackDrop from "./SoftBackDrop";
 
 const Login = () => {
-  const { user, login, signUp, setUser, setIsLoggedIn, refreshCredits } =
-    useAuth();
+  const { user, login, signUp } = useAuth();
   const navigate = useNavigate();
   const [state, setState] = useState("login");
 
