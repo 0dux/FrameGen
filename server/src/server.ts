@@ -13,6 +13,7 @@ declare module "express-session" {
     interface SessionData {
         isLoggedIn: boolean,
         userId: string,
+        state?: string
     }
 }
 const app = express();
@@ -45,6 +46,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/thumbnail", ThumbnailRouter)
 app.use("/api/v1/user", UserRouter)
+app.use("/api/v1/googleOAuth")
 
 const port = 3000
 

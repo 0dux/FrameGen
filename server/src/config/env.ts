@@ -7,7 +7,9 @@ const envSchema = z.object({
     SESSION_SECRET: z.string(),
     GEMINI_API_KEY: z.string(),
     CLOUDINARY_URL: z.string(),
-
+    GOOGLE_OAUTH_CLIENT_ID: z.string(),
+    GOOGLE_OAUTH_CLIENT_SECRET: z.string(),
+    GOOGLE_OAUTH_REDIRECT_URL: z.string(),
 })
 
 const result = envSchema.safeParse(process.env);
