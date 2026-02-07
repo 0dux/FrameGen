@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import { number } from "zod";
-import { required } from "zod/mini";
 
 export interface IUser {
     name: string,

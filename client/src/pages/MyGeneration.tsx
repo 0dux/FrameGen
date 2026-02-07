@@ -28,7 +28,7 @@ const MyGeneration = () => {
 
   const togglePublish = async (thumbnailId: string) => {
     try {
-      const { data } = await api.get(
+      const { data } = await api.patch(
         `/api/v1/thumbnail/toggle-published/${thumbnailId}`,
       );
       // Update the local state with the toggled value

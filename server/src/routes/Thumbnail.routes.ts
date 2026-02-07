@@ -6,7 +6,7 @@ const ThumbnailRouter = Router();
 
 ThumbnailRouter.post("/generate", protect, generateThumbnail);
 ThumbnailRouter.delete("/delete/:id", protect, deleteThumbnail);
-ThumbnailRouter.get("/toggle-published/:thumbnailId", protect, togglePublished);
+ThumbnailRouter.patch("/toggle-published/:thumbnailId", protect, togglePublished);
 ThumbnailRouter.get("/community", getPublishedThumbnails)
 
 

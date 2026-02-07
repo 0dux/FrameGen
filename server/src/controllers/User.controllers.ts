@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 import Thumbnail from "../models/Thumbnail.models.js";
 import User from "../models/User.models.js";
 
@@ -14,7 +15,7 @@ export const getUserThumbnails = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.error(error);
         return res.status(500).json({
-            message: error.message
+            message: "Failed to fetch thumbnails"
         })
     }
 }
@@ -24,6 +25,10 @@ export const getThumbnailById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { userId } = req.session;
+
+        if (!mongoose.Types.ObjectId.isValid(id as string)) {
+            return res.status(400).json({ message: "Invalid thumbnail ID" });
+        }
 
         const thumbnail = await Thumbnail.findOne({ _id: id, userId });
         if (!thumbnail) {
@@ -35,7 +40,7 @@ export const getThumbnailById = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.error(error);
         return res.status(500).json({
-            message: error.message
+            message: "Failed to fetch thumbnail"
         })
     }
 }
@@ -55,7 +60,7 @@ export const getCredits = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.error(error);
         return res.status(500).json({
-            message: error.message
+            message: "Failed to fetch credits"
         })
     }
 }

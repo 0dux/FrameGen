@@ -74,7 +74,7 @@ export const googleCallback = async (req: Request, res: Response) => {
 
         delete req.session.state;
 
-        return res.redirect(CLIENT_URL);
+        return res.redirect(CLIENT_URL || "http://localhost:5173");
 
     } catch (error: any) {
         console.error('Google OAuth Callback Error:', error);

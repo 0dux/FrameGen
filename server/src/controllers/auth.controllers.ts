@@ -55,8 +55,7 @@ export const registerUser = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.error(error);
         res.status(500).json({
-            message: "Internal Server Error",
-            error: error.message,
+            message: "Internal Server Error"
         })
     }
 }
@@ -117,8 +116,7 @@ export const loginUser = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.error(error);
         res.status(500).json({
-            message: "Internal Server Error",
-            error: error.message,
+            message: "Internal Server Error"
         })
     }
 }
@@ -129,8 +127,7 @@ export const logoutUser = async (req: Request, res: Response) => {
         if (error) {
             console.error(error);
             return res.status(400).json({
-                message: "Internal Server Error.",
-                error: error.message,
+                message: "Failed to logout"
             })
         }
         return res.status(200).json({
@@ -166,8 +163,7 @@ export const verifyUser = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.error(error);
         res.status(500).json({
-            message: "Internal Server Error",
-            error: error.message,
+            message: "Internal Server Error"
         })
     }
 }

@@ -2,6 +2,7 @@ import { GenerateContentConfig, HarmBlockThreshold, HarmCategory } from "@google
 import { v2 as cloudinary } from "cloudinary";
 import { Request, Response } from "express";
 import fs from "fs";
+import mongoose from "mongoose";
 import path from "path";
 import ai from "../config/ai.js";
 import Thumbnail from "../models/Thumbnail.models.js";
@@ -90,10 +91,10 @@ export const generateThumbnail = async (req: Request, res: Response) => {
                 imageSize: "1k",
             },
             safetySettings: [
-                { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.OFF },
-                { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.OFF },
-                { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.OFF },
-                { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.OFF },
+                { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+                { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+                { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+                { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
             ]
         }
 
@@ -117,7 +118,6 @@ export const generateThumbnail = async (req: Request, res: Response) => {
             config: generationConfig,
         })
 
-        //Log response for debugging
         // console.log("AI Response:", JSON.stringify(response, null, 2));
 
         //Response validity check
@@ -191,7 +191,7 @@ export const generateThumbnail = async (req: Request, res: Response) => {
             await User.findByIdAndUpdate(userId, { $inc: { credits: 5 } });
         }
         return res.status(500).json({
-            message: error.message
+            message: "Failed to generate thumbnail. Please try again."
         });
     }
 }
@@ -201,11 +201,21 @@ export const deleteThumbnail = async (req: Request, res: Response) => {
         const { id } = req.params;
         const { userId } = req.session;
 
-        await Thumbnail.findByIdAndDelete({ _id: id, userId });
+        // Validate ObjectId to prevent injection
+        if (!mongoose.Types.ObjectId.isValid(id as string)) {
+            return res.status(400).json({ message: "Invalid thumbnail ID" });
+        }
+
+        const deleted = await Thumbnail.findOneAndDelete({ _id: id, userId });
+        if (!deleted) {
+            return res.status(404).json({ message: "Thumbnail not found" });
+        }
+
+        return res.json({ message: "Thumbnail deleted successfully" });
     } catch (error: any) {
         console.error(error);
         return res.status(500).json({
-            message: error.message
+            message: "Failed to delete thumbnail"
         });
     }
 }
@@ -214,6 +224,11 @@ export const togglePublished = async (req: Request, res: Response) => {
     try {
         const { thumbnailId } = req.params;
         const { userId } = req.session;
+
+        // Validate ObjectId to prevent injection
+        if (!mongoose.Types.ObjectId.isValid(thumbnailId as string)) {
+            return res.status(400).json({ message: "Invalid thumbnail ID" });
+        }
 
         const thumbnail = await Thumbnail.findOne({ _id: thumbnailId, userId });
         if (!thumbnail) {
@@ -229,7 +244,7 @@ export const togglePublished = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.error(error);
         return res.status(500).json({
-            message: error.message
+            message: "Failed to update thumbnail"
         });
     }
 }
@@ -248,7 +263,7 @@ export const getPublishedThumbnails = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.error(error);
         return res.status(500).json({
-            message: error.message
+            message: "Failed to fetch thumbnails"
         });
     }
 }
