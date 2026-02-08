@@ -28,7 +28,7 @@ const colorSchemeDescriptions = {
 }
 
 export const generateThumbnail = async (req: Request, res: Response) => {
-    console.log("Generate Thumbnail Controller");
+    // console.log("Generate Thumbnail Controller");
 
     try {
         const { userId } = req.session;
@@ -120,7 +120,7 @@ export const generateThumbnail = async (req: Request, res: Response) => {
             config: generationConfig,
         })
 
-        console.log("Ai Response:", response);
+        // console.log("Ai Response:", response);
 
         //Response validity check
         if (!response?.candidates || response.candidates.length === 0) {
@@ -172,7 +172,7 @@ export const generateThumbnail = async (req: Request, res: Response) => {
                 // use_filename: true, 
             });
 
-            console.log("Upload result : ", uploadResult);
+            // console.log("Upload result : ", uploadResult);
 
             thumbnail.image_url = uploadResult.url;
             thumbnail.isGenerating = false;
