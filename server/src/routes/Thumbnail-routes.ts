@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { deleteThumbnail, generateThumbnail, getPublishedThumbnails, togglePublished } from "../controllers/Thumbnail.controllers";
-import protect from "../middlewares/auth.middleware";
+import { deleteThumbnail, generateThumbnail, getPublishedThumbnails, togglePublished } from "../controllers/Thumbnail-controllers";
+import protect from "../middlewares/auth-middleware";
 
 const ThumbnailRouter = Router();
 

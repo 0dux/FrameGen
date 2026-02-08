@@ -7,10 +7,10 @@ import session from "express-session";
 import helmet from "helmet";
 import { connectDB } from "./config/db";
 import { env } from "./config/env";
-import AuthRouter from "./routes/Auth.routes";
-import googleRouter from "./routes/GoogleOAuth.routes";
-import ThumbnailRouter from "./routes/Thumbnail.routes";
-import UserRouter from "./routes/User.routes";
+import AuthRouter from "./routes/Auth-routes";
+import googleRouter from "./routes/GoogleOAuth-routes";
+import ThumbnailRouter from "./routes/Thumbnail-routes";
+import UserRouter from "./routes/User-routes";
 
 declare module "express-session" {
     interface SessionData {

@@ -5,8 +5,8 @@ import fs from "fs";
 import mongoose from "mongoose";
 import path from "path";
 import ai from "../config/ai";
-import Thumbnail from "../models/Thumbnail.models";
-import User from "../models/User.models";
+import Thumbnail from "../models/Thumbnail-models";
+import User from "../models/User-models";
 
 const stylePrompts = {
     'Bold & Graphic': 'eye-catching thumbnail, bold typography, vibrant colors, expressive facial reaction, dramatic lighting, high contrast, click-worthy composition, professional style',
