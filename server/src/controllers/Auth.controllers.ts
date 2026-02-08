@@ -44,14 +44,21 @@ export const registerUser = async (req: Request, res: Response) => {
         req.session.isLoggedIn = true;
         req.session.userId = newUser._id.toString();
 
-        return res.status(200).json({
-            message: "Account created successfully",
-            user: {
-                id: newUser._id,
-                name: newUser.name,
-                email: newUser.email,
+        // Explicitly save session before responding
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return res.status(500).json({ message: "Session error" });
             }
-        })
+            return res.status(200).json({
+                message: "Account created successfully",
+                user: {
+                    id: newUser._id,
+                    name: newUser.name,
+                    email: newUser.email,
+                }
+            });
+        });
     } catch (error: any) {
         console.error(error);
         res.status(500).json({
@@ -105,14 +112,21 @@ export const loginUser = async (req: Request, res: Response) => {
         req.session.isLoggedIn = true;
         req.session.userId = user._id.toString();
 
-        return res.status(200).json({
-            message: "Account logged-in successfully",
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
+        // Explicitly save session before responding
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return res.status(500).json({ message: "Session error" });
             }
-        })
+            return res.status(200).json({
+                message: "Account logged-in successfully",
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                }
+            });
+        });
     } catch (error: any) {
         console.error(error);
         res.status(500).json({

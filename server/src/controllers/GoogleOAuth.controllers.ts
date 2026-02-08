@@ -82,10 +82,16 @@ export const googleCallback = async (req: Request, res: Response) => {
 
         req.session.isLoggedIn = true;
         req.session.userId = user._id.toString();
-
         delete req.session.state;
 
-        return res.redirect(CLIENT_URL as string);
+        // Explicitly save session before redirecting
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return res.redirect(`${CLIENT_URL}/login?error=session_error`);
+            }
+            return res.redirect(CLIENT_URL as string);
+        });
 
     } catch (error: any) {
         console.error('Google OAuth Callback Error:', error);
