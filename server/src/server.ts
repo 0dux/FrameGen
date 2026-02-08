@@ -45,6 +45,8 @@ app.use(cors({
     credentials: true,
 }));
 
+app.set("trust proxy", 1);
+
 app.use(session({
     secret: env.SESSION_SECRET,
     resave: false,
@@ -54,6 +56,7 @@ app.use(session({
         httpOnly: true,
         secure: env.NODE_ENV === "production",
         sameSite: env.NODE_ENV === "production" ? "none" : "lax",
+        path: "/"
     },
     store: MongoStore.create({
         mongoUrl: env.MONGODB_URI,
