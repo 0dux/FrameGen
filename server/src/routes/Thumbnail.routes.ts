@@ -4,7 +4,7 @@ import protect from "../middlewares/auth.middleware.js";
 
 const ThumbnailRouter = Router();
 
-console.log("Thumbnail Router Accessed");
+// console.log("Thumbnail Router Accessed");
 
 
 ThumbnailRouter.post("/generate", protect, generateThumbnail);
