@@ -46,6 +46,7 @@ app.use(cors({
 }));
 
 app.set("trust proxy", 1);
+// console.log(env.NODE_ENV);
 
 app.use(session({
     secret: env.SESSION_SECRET,
@@ -63,6 +64,7 @@ app.use(session({
         collectionName: "session"
     })
 }))
+
 app.use(express.json({ limit: "10kb" }));
 
 app.get("/", (req: Request, res: Response) => {

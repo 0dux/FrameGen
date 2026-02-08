@@ -27,7 +27,7 @@ export const googleLogin = async (req: Request, res: Response) => {
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error:', err);
-                return res.redirect(`${CLIENT_URL || "http://localhost:5173"}/login?error=session_error`);
+                return res.redirect(`${CLIENT_URL}/login?error=session_error`);
             }
             // console.log('Session saved with ID:', req.sessionID);
             // console.log('State stored:', req.session.state);
@@ -35,7 +35,7 @@ export const googleLogin = async (req: Request, res: Response) => {
         });
     } catch (error) {
         console.error('Google OAuth Login Error:', error);
-        return res.redirect(`${CLIENT_URL || "http://localhost:5173"}/login?error=oauth_failed`);
+        return res.redirect(`${CLIENT_URL}/login?error=oauth_failed`);
     }
 }
 
@@ -48,14 +48,14 @@ export const googleCallback = async (req: Request, res: Response) => {
 
         if (error) {
             console.error('Google OAuth Error:', error);
-            return res.redirect(`${CLIENT_URL || "http://localhost:5173"}/login?error=oauth_denied`);
+            return res.redirect(`${CLIENT_URL}/login?error=oauth_denied`);
         }
 
         if (state !== req.session.state) {
             console.error('State mismatch. Possible CSRF attack');
             // console.error('URL state:', state);
             // console.error('Session state:', req.session.state);
-            return res.redirect(`${CLIENT_URL || "http://localhost:5173"}/login?error=invalid_state`);
+            return res.redirect(`${CLIENT_URL}/login?error=invalid_state`);
         }
 
         const { tokens } = await oauth2Client.getToken(code as string);
@@ -65,7 +65,7 @@ export const googleCallback = async (req: Request, res: Response) => {
         const { data: googleUser } = await oauth2.userinfo.get();
 
         if (!googleUser.email) {
-            return res.redirect(`${CLIENT_URL || "http://localhost:5173"}/login?error=no_email`);
+            return res.redirect(`${CLIENT_URL}/login?error=no_email`);
         }
 
         let user = await User.findOne({ email: googleUser.email });
@@ -85,10 +85,10 @@ export const googleCallback = async (req: Request, res: Response) => {
 
         delete req.session.state;
 
-        return res.redirect(CLIENT_URL || "http://localhost:5173");
+        return res.redirect(CLIENT_URL as string);
 
     } catch (error: any) {
         console.error('Google OAuth Callback Error:', error);
-        return res.redirect(`${CLIENT_URL || "http://localhost:5173"}/login?error=oauth_failed`);
+        return res.redirect(`${CLIENT_URL}/login?error=oauth_failed`);
     }
 }
