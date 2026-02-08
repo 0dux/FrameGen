@@ -29,8 +29,14 @@ const Login = () => {
   };
 
   // Google Login - must use full page redirect, not AJAX
+  // In production, use relative URL to go through Vercel proxy (same-origin cookies)
+  // In development, use the local server URL directly
   const googleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_BASE_URL || "http://localhost:3000"}/api/v1/googleOAuth/login`;
+    const isDev = import.meta.env.DEV;
+    const baseUrl = isDev
+      ? import.meta.env.VITE_BASE_URL || "http://localhost:3000"
+      : "";
+    window.location.href = `${baseUrl}/api/v1/googleOAuth/login`;
   };
 
   useEffect(() => {
