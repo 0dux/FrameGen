@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import z from "zod";
-import User from "../models/User-models";
+import User from "../models/User-models.js";
 
 
 

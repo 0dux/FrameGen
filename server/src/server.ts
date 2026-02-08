@@ -5,12 +5,12 @@ import express, { Request, Response } from 'express';
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 import helmet from "helmet";
-import { connectDB } from "./config/db";
-import { env } from "./config/env";
-import AuthRouter from "./routes/Auth-routes";
-import googleRouter from "./routes/GoogleOAuth-routes";
-import ThumbnailRouter from "./routes/Thumbnail-routes";
-import UserRouter from "./routes/User-routes";
+import { connectDB } from "./config/db.js";
+import { env } from "./config/env.js";
+import AuthRouter from "./routes/Auth-routes.js";
+import googleRouter from "./routes/GoogleOAuth-routes.js";
+import ThumbnailRouter from "./routes/Thumbnail-routes.js";
+import UserRouter from "./routes/User-routes.js";
 
 declare module "express-session" {
     interface SessionData {
