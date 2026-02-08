@@ -51,7 +51,7 @@ app.use(cors({
     credentials: true,
 }));
 
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 // console.log(env.NODE_ENV);
 
 app.use(session({
@@ -63,11 +63,16 @@ app.use(session({
         httpOnly: true,
         secure: env.NODE_ENV === "production",
         sameSite: env.NODE_ENV === "production" ? "none" : "lax",
-        path: "/"
+        path: "/",
+        domain: env.NODE_ENV === "production" ? ".vercel.app" : undefined
     },
     store: MongoStore.create({
         mongoUrl: env.MONGODB_URI,
-        collectionName: "session"
+        collectionName: "session",
+        touchAfter: 24 * 3600, // Lazy session update
+        crypto: {
+            secret: env.SESSION_SECRET
+        }
     })
 }))
 
@@ -88,6 +93,11 @@ app.use("/api/v1/googleOAuth", googleRouter)
 
 const port = env.PORT || 3000;
 
-app.listen(port, () => {
-    console.log(`Server is running at :: http://localhost:${port}`);
-})
+// Only listen in development (not on Vercel)
+if (env.NODE_ENV !== "production") {
+    app.listen(port, () => {
+        console.log(`Server is running at :: http://localhost:${port}`);
+    })
+}
+
+export default app;
