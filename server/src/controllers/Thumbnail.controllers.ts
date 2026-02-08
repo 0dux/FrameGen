@@ -158,11 +158,10 @@ export const generateThumbnail = async (req: Request, res: Response) => {
         }
 
         const fileName = `final-output-${Date.now()}.png`;
-        let filePath = path.join("images", fileName);
+        // Use /tmp for Vercel serverless (read-only filesystem except /tmp)
+        let filePath = path.join("/tmp", fileName);
 
         try {
-            //Create images folder
-            fs.mkdirSync("images", { recursive: true });
             fs.writeFileSync(filePath, finalBuffer);
 
             //Upload file
