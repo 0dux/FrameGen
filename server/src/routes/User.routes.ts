@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getCredits, getThumbnailById, getUserThumbnails } from "../controllers/User.controllers.js";
-import protect from "../middlewares/auth.middleware.js";
+import { getCredits, getThumbnailById, getUserThumbnails } from "../controllers/User.controllers";
+import protect from "../middlewares/auth.middleware";
 
 const UserRouter = Router();
 
