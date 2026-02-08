@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
-import Thumbnail from "../models/Thumbnail-models.js";
-import User from "../models/User-models.js";
+import Thumbnail from "../models/Thumbnail.models.js";
+import User from "../models/User.models.js";
 
 // Controller to get all user thumbnails 
 export const getUserThumbnails = async (req: Request, res: Response) => {

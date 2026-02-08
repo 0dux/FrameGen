@@ -7,10 +7,10 @@ import session from "express-session";
 import helmet from "helmet";
 import { connectDB } from "./config/db.js";
 import { env } from "./config/env.js";
-import AuthRouter from "./routes/Auth-routes.js";
-import googleRouter from "./routes/GoogleOAuth-routes.js";
-import ThumbnailRouter from "./routes/Thumbnail-routes.js";
-import UserRouter from "./routes/User-routes.js";
+import AuthRouter from "./routes/Auth.routes.js";
+import googleRouter from "./routes/GoogleOAuth.routes.js";
+import ThumbnailRouter from "./routes/Thumbnail.routes.js";
+import UserRouter from "./routes/User.routes.js";
 
 declare module "express-session" {
     interface SessionData {
@@ -21,6 +21,12 @@ declare module "express-session" {
 }
 const app = express();
 connectDB();
+
+// Debug: Log ALL incoming requests (put FIRST before any middleware)
+app.use((req, res, next) => {
+    console.log(`>>> REQUEST: ${req.method} ${req.url}`);
+    next();
+});
 
 // Security middleware
 app.use(helmet());
@@ -45,7 +51,7 @@ app.use(cors({
     credentials: true,
 }));
 
-app.set("trust proxy", 1);
+// app.set("trust proxy", 1);
 // console.log(env.NODE_ENV);
 
 app.use(session({

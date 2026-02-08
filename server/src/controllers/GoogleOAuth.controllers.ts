@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { google } from 'googleapis';
 import { env } from '../config/env.js';
 import oauth2Client from '../config/googleOAuth.js';
-import User from '../models/User-models.js';
+import User from '../models/User.models.js';
 
 const scopes = [
     "https://www.googleapis.com/auth/userinfo.email",

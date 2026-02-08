@@ -5,8 +5,8 @@ import fs from "fs";
 import mongoose from "mongoose";
 import path from "path";
 import ai from "../config/ai.js";
-import Thumbnail from "../models/Thumbnail-models.js";
-import User from "../models/User-models.js";
+import Thumbnail from "../models/Thumbnail.models.js";
+import User from "../models/User.models.js";
 
 const stylePrompts = {
     'Bold & Graphic': 'eye-catching thumbnail, bold typography, vibrant colors, expressive facial reaction, dramatic lighting, high contrast, click-worthy composition, professional style',
@@ -28,6 +28,8 @@ const colorSchemeDescriptions = {
 }
 
 export const generateThumbnail = async (req: Request, res: Response) => {
+    console.log("Generate Thumbnail Controller");
+
     try {
         const { userId } = req.session;
 
@@ -91,10 +93,10 @@ export const generateThumbnail = async (req: Request, res: Response) => {
                 imageSize: "1k",
             },
             safetySettings: [
-                { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-                { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-                { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-                { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+                { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.OFF },
+                { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.OFF },
+                { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.OFF },
+                { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.OFF },
             ]
         }
 
@@ -118,7 +120,7 @@ export const generateThumbnail = async (req: Request, res: Response) => {
             config: generationConfig,
         })
 
-        // console.log("AI Response:", JSON.stringify(response, null, 2));
+        console.log("Ai Response:", response);
 
         //Response validity check
         if (!response?.candidates || response.candidates.length === 0) {
@@ -169,6 +171,8 @@ export const generateThumbnail = async (req: Request, res: Response) => {
                 folder: "Frame-Gen-Images",
                 // use_filename: true, 
             });
+
+            console.log("Upload result : ", uploadResult);
 
             thumbnail.image_url = uploadResult.url;
             thumbnail.isGenerating = false;
