@@ -32,12 +32,21 @@ const Community = () => {
     }
   };
 
-  const handleDownload = async (image_url: string) => {
-    const link = document.createElement("a");
-    link.href = image_url.replace("/upload", "/upload/fl_attachment");
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+  const handleDownload = async (image_url: string, title?: string) => {
+    try {
+      const response = await fetch(image_url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${title || "thumbnail"}.png`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
   };
 
   useEffect(() => {
@@ -129,7 +138,7 @@ const Community = () => {
                       className="absolute bottom-2 right-2 max-sm:flex sm:hidden group-hover:flex gap-1.5"
                     >
                       <DownloadIcon
-                        onClick={() => handleDownload(thumb.image_url!)}
+                        onClick={() => handleDownload(thumb.image_url!, thumb.title)}
                         className="size-6 bg-black/50 p-1 rounded hover:bg-green-600 transition-all"
                       />
                       <Link

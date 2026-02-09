@@ -17,16 +17,22 @@ const PreviewPanel = ({
   } as Record<AspectRatio, string>;
 
   //Download function
-  const onDownload = () => {
+  const onDownload = async () => {
     if (!thumbnail?.image_url) return;
-    const link = document.createElement("a");
-    link.href = thumbnail?.image_url.replace(
-      "/upload",
-      "/upload/fl_attachment",
-    );
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+    try {
+      const response = await fetch(thumbnail.image_url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${thumbnail.title || "thumbnail"}.png`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
   };
 
   return (

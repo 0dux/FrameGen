@@ -59,8 +59,8 @@ export const generateThumbnail = async (req: Request, res: Response) => {
 
         // Atomic check and deduct credits - prevents race conditions
         const user = await User.findOneAndUpdate(
-            { _id: userId, credits: { $gte: 5 } },
-            { $inc: { credits: -5 } },
+            { _id: userId, credits: { $gte: 10 } },
+            { $inc: { credits: -10 } },
             { new: true }
         );
 
@@ -126,8 +126,6 @@ export const generateThumbnail = async (req: Request, res: Response) => {
         if (!response?.candidates || response.candidates.length === 0) {
             console.error("No candidates in response");
             const blockReason = response?.promptFeedback?.blockReason;
-            const safetyRatings = response?.promptFeedback?.safetyRatings;
-
             thumbnail.isGenerating = false;
             await thumbnail.save();
 
@@ -191,7 +189,7 @@ export const generateThumbnail = async (req: Request, res: Response) => {
         // Refund credits on failure
         const { userId } = req.session;
         if (userId) {
-            await User.findByIdAndUpdate(userId, { $inc: { credits: 5 } });
+            await User.findByIdAndUpdate(userId, { $inc: { credits: 10 } });
         }
         return res.status(500).json({
             message: "Failed to generate thumbnail. Please try again."
