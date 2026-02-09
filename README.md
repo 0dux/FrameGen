@@ -74,7 +74,7 @@ Frame-Gen is a full-stack web application that leverages Google's Gemini AI to g
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/frame-gen.git
+   git clone https://github.com/0dux/frame-gen.git
    cd frame-gen
    ```
 
