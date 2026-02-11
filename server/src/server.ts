@@ -63,8 +63,6 @@ app.use(session({
         secure: env.NODE_ENV === "production",
         sameSite: env.NODE_ENV === "production" ? "none" : "lax",
         path: "/"
-        // Note: Do NOT set domain for cross-origin cookies on Vercel
-        // .vercel.app is a public suffix and browsers reject such cookies
     },
     store: MongoStore.create({
         mongoUrl: env.MONGODB_URI,
@@ -93,7 +91,6 @@ app.use("/api/v1/googleOAuth", googleRouter)
 
 const port = env.PORT || 3000;
 
-// Only listen in development (not on Vercel)
 if (env.NODE_ENV !== "production") {
     app.listen(port, () => {
         console.log(`Server is running at :: http://localhost:${port}`);
