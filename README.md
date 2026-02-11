@@ -40,24 +40,24 @@ Frame-Gen is a full-stack web application that leverages Google's Gemini AI to g
 
 ### Frontend
 
-|                                                       Technology                                                       | Description                 |
-| :--------------------------------------------------------------------------------------------------------------------: | --------------------------- |
-|           ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)           | React 19 with TypeScript    |
-|            ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)             | Lightning-fast build tool   |
-|  ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)  | Utility-first CSS framework |
-|      ![Framer Motion](https://img.shields.io/badge/Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)      | Smooth animations           |
-| ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white) | Client-side routing         |
+|                                                       Technology                                                       | Name          | Purpose                                        |
+| :--------------------------------------------------------------------------------------------------------------------: | ------------- | ---------------------------------------------- |
+|           ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)           | React 19      | UI library for building interactive components |
+|            ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)             | Vite          | Lightning-fast build tool and dev server       |
+|  ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)  | TailwindCSS   | Utility-first CSS framework for styling        |
+|      ![Framer Motion](https://img.shields.io/badge/Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)      | Framer Motion | Smooth animations and transitions              |
+| ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white) | React Router  | Client-side routing and navigation             |
 
 ### Backend
 
-|                                                        Technology                                                         | Description                  |
-| :-----------------------------------------------------------------------------------------------------------------------: | ---------------------------- |
-|         ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)          | Express 5 with TypeScript    |
-|         ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)          | NoSQL database with Mongoose |
-| ![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white) | AI image generation          |
-|     ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)     | Image storage & optimization |
-|     ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)     | Type-safe development        |
-|               ![Zod](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)                | Schema validation            |
+|                                                        Technology                                                         | Name          | Purpose                                     |
+| :-----------------------------------------------------------------------------------------------------------------------: | ------------- | ------------------------------------------- |
+|         ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)          | Express 5     | Web server framework for REST APIs          |
+|         ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)          | MongoDB       | NoSQL database for storing user data        |
+| ![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white) | Google Gemini | AI-powered image generation                 |
+|     ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)     | Cloudinary    | Image storage, optimization, and CDN        |
+|     ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)     | TypeScript    | Type-safe JavaScript development            |
+|               ![Zod](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)                | Zod           | Schema validation for request/response data |
 
 ## Getting Started
 
