@@ -1,7 +1,7 @@
 import MongoStore from "connect-mongo";
 import cors from "cors";
 import "dotenv/config";
-import express, { Request, Response } from 'express';
+import express, { Request, Response } from "express";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 import helmet from "helmet";
@@ -13,11 +13,11 @@ import ThumbnailRouter from "./routes/Thumbnail.routes.js";
 import UserRouter from "./routes/User.routes.js";
 
 declare module "express-session" {
-    interface SessionData {
-        isLoggedIn: boolean,
-        userId: string,
-        state?: string
-    }
+  interface SessionData {
+    isLoggedIn: boolean;
+    userId: string;
+    state?: string;
+  }
 }
 const app = express();
 connectDB();
@@ -32,69 +32,73 @@ app.use(helmet());
 
 // Rate limiting
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: { message: "Too many requests, please try again later" }
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { message: "Too many requests, please try again later" },
 });
 
 const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 5,
-    message: { message: "Too many login attempts, please try again later" }
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { message: "Too many login attempts, please try again later" },
 });
 
 app.use(limiter);
 
-app.use(cors({
+app.use(
+  cors({
     origin: env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
-}));
+  }),
+);
 
 app.set("trust proxy", 1);
 // console.log(env.NODE_ENV);
 
-app.use(session({
+app.use(
+  session({
     secret: env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        httpOnly: true,
-        secure: env.NODE_ENV === "production",
-        sameSite: env.NODE_ENV === "production" ? "none" : "lax",
-        path: "/"
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
+      secure: env.NODE_ENV === "production",
+      sameSite: env.NODE_ENV === "production" ? "none" : "lax",
+      path: "/",
     },
     store: MongoStore.create({
-        mongoUrl: env.MONGODB_URI,
-        collectionName: "session",
-        touchAfter: 24 * 3600, // Lazy session update
-        crypto: {
-            secret: env.SESSION_SECRET
-        }
-    })
-}))
+      mongoUrl: env.MONGODB_URI,
+      collectionName: "session",
+      touchAfter: 24 * 3600,
+      crypto: {
+        secret: env.SESSION_SECRET,
+      },
+    }),
+  }),
+);
 
 app.use(express.json({ limit: "10kb" }));
 
 app.get("/", (req: Request, res: Response) => {
-    res.json({
-        message: "Server is working!!!"
-    })
-})
+  res.json({
+    message: "Server is working!!!",
+  });
+});
 app.use("/api/v1/auth/login", authLimiter);
 app.use("/api/v1/auth/register", authLimiter);
 
 app.use("/api/v1/auth", AuthRouter);
-app.use("/api/v1/thumbnail", ThumbnailRouter)
-app.use("/api/v1/user", UserRouter)
-app.use("/api/v1/googleOAuth", googleRouter)
+app.use("/api/v1/thumbnail", ThumbnailRouter);
+app.use("/api/v1/user", UserRouter);
+app.use("/api/v1/googleOAuth", googleRouter);
 
 const port = env.PORT || 3000;
 
 if (env.NODE_ENV !== "production") {
-    app.listen(port, () => {
-        console.log(`Server is running at :: http://localhost:${port}`);
-    })
+  app.listen(port, () => {
+    console.log(`Server is running at :: http://localhost:${port}`);
+  });
 }
 
 export default app;
