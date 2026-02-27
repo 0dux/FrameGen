@@ -3,6 +3,7 @@ import {
   deleteThumbnail,
   generateThumbnail,
   getPublishedThumbnails,
+  proxyDownload,
   togglePublished,
 } from "../controllers/Thumbnail.controllers.js";
 import protect from "../middlewares/auth.middleware.js";
@@ -17,5 +18,6 @@ ThumbnailRouter.patch(
   togglePublished,
 );
 ThumbnailRouter.get("/community", getPublishedThumbnails);
+ThumbnailRouter.get("/download-proxy", protect, proxyDownload);
 
 export default ThumbnailRouter;

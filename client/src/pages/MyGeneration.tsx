@@ -70,8 +70,11 @@ const MyGeneration = () => {
 
   const handleDownload = async (image_url: string, title?: string) => {
     try {
-      const response = await fetch(image_url);
-      const blob = await response.blob();
+      const response = await api.get("/api/v1/thumbnail/download-proxy", {
+        params: { url: image_url, filename: title || "thumbnail" },
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data]);
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -82,6 +85,7 @@ const MyGeneration = () => {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Download failed:", error);
+      toast.error("Failed to download thumbnail");
     }
   };
 

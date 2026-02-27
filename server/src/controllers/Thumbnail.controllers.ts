@@ -309,3 +309,45 @@ export const getPublishedThumbnails = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const proxyDownload = async (req: Request, res: Response) => {
+  try {
+    const { url, filename } = req.query;
+
+    if (!url || typeof url !== "string") {
+      return res.status(400).json({ message: "Missing image URL" });
+    }
+
+    // Only allow Cloudinary URLs to prevent open-proxy abuse
+    if (!url.includes("res.cloudinary.com")) {
+      return res.status(403).json({ message: "Invalid image source" });
+    }
+
+    const imageResponse = await fetch(url);
+
+    if (!imageResponse.ok) {
+      return res
+        .status(imageResponse.status)
+        .json({ message: "Failed to fetch image" });
+    }
+
+    const contentType =
+      imageResponse.headers.get("content-type") || "image/png";
+    const downloadName =
+      typeof filename === "string" && filename
+        ? `${filename}.png`
+        : "thumbnail.png";
+
+    res.setHeader("Content-Type", contentType);
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${downloadName}"`,
+    );
+
+    const arrayBuffer = await imageResponse.arrayBuffer();
+    res.send(Buffer.from(arrayBuffer));
+  } catch (error: any) {
+    console.error("Proxy download failed:", error);
+    return res.status(500).json({ message: "Download failed" });
+  }
+};
