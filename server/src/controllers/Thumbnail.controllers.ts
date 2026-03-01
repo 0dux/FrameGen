@@ -79,9 +79,9 @@ export const generateThumbnail = async (req: Request, res: Response) => {
 
     // Atomic check and deduct credits - prevents race conditions
     const user = await User.findOneAndUpdate(
-      { _id: userId, credits: { $gte: 10 } }, //EXPLAIN- what does $gte do
+      { _id: userId, credits: { $gte: 10 } },
       { $inc: { credits: -10 } },
-      { new: true }, //EXPLAIN- what does new do
+      { new: true },
     );
 
     if (!user) {
@@ -107,6 +107,7 @@ export const generateThumbnail = async (req: Request, res: Response) => {
       color_scheme,
       isGenerating: true,
     });
+
     //model
     const model = "gemini-3-pro-image-preview";
 
@@ -183,13 +184,13 @@ export const generateThumbnail = async (req: Request, res: Response) => {
     }
 
     const parts = response.candidates[0].content.parts;
+
     //Generating file buffer
     let finalBuffer: Buffer | null = null;
 
     for (const part of parts) {
-      //EXPLAIN- what does parts do how does this get converted into a image?
       if (part.inlineData) {
-        finalBuffer = Buffer.from(part.inlineData.data, "base64"); //EXPLAIN- what does base64 do? and why is the loop breaking after this?
+        finalBuffer = Buffer.from(part.inlineData.data, "base64");
         break;
       }
     }
@@ -199,6 +200,7 @@ export const generateThumbnail = async (req: Request, res: Response) => {
     }
 
     const fileName = `final-output-${Date.now()}.png`;
+
     // Use /tmp for Vercel serverless (read-only filesystem except /tmp)
     let filePath = path.join("/tmp", fileName);
 
@@ -215,7 +217,7 @@ export const generateThumbnail = async (req: Request, res: Response) => {
       thumbnail.isGenerating = false;
       await thumbnail.save();
 
-      res.json({
+      return res.json({
         message: "Thumbnail Generated",
         thumbnail,
       });
@@ -229,9 +231,11 @@ export const generateThumbnail = async (req: Request, res: Response) => {
     console.error(error);
     // Refund credits on failure
     const { userId } = req.session;
+
     if (userId) {
       await User.findByIdAndUpdate(userId, { $inc: { credits: 10 } });
     }
+
     return res.status(500).json({
       message: "Failed to generate thumbnail. Please try again.",
     });
@@ -278,8 +282,10 @@ export const togglePublished = async (req: Request, res: Response) => {
         message: "Thumbnail not found!",
       });
     }
+
     thumbnail.isPublished = !thumbnail.isPublished;
     await thumbnail.save();
+
     return res.json({
       thumbnail,
     });
@@ -294,12 +300,14 @@ export const togglePublished = async (req: Request, res: Response) => {
 export const getPublishedThumbnails = async (req: Request, res: Response) => {
   try {
     const thumbnails = await Thumbnail.find({ isPublished: true });
+
     if (!thumbnails) {
       return res.status(404).json({
         message: "No one has published any thumbnails yet",
       });
     }
-    res.json({
+    
+    return res.json({
       thumbnails,
     });
   } catch (error: any) {

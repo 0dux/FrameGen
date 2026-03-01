@@ -1,15 +1,19 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
-import Thumbnail, { IThumbnail } from "../models/Thumbnail.models.js";
+import Thumbnail from "../models/Thumbnail.models.js";
 import User from "../models/User.models.js";
 
 // Controller to get all user thumbnails
 export const getUserThumbnails = async (req: Request, res: Response) => {
   try {
     const { userId } = req.session;
-    const thumbnails = await Thumbnail.find({ userId }).sort({ createdAt: -1 });
+
+    const thumbnails = await Thumbnail.find({ userId }).sort({
+      createdAt: "descending",
+    });
 
     return res.json({
+      message: "Thumbnails fetched successfully",
       thumbnails,
     });
   } catch (error: any) {
@@ -31,11 +35,13 @@ export const getThumbnailById = async (req: Request, res: Response) => {
     }
 
     const thumbnail = await Thumbnail.findOne({ _id: id, userId });
+
     if (!thumbnail) {
       return res.status(404).json({
         message: "Thumbnail not found",
       });
     }
+
     return res.json(thumbnail);
   } catch (error: any) {
     console.error(error);
@@ -49,11 +55,13 @@ export const getCredits = async (req: Request, res: Response) => {
   try {
     const { userId } = req.session;
     const user = await User.findById(userId);
+
     if (!user) {
       return res.status(404).json({
         message: "User not found",
       });
     }
+
     return res.json({
       credits: user.credits,
     });

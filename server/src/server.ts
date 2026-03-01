@@ -22,11 +22,6 @@ declare module "express-session" {
 const app = express();
 connectDB();
 
-// app.use((req, res, next) => {
-//     console.log(`>>> REQUEST: ${req.method} ${req.url}`);
-//     next();
-// });
-
 // Security middleware
 app.use(helmet());
 
@@ -53,7 +48,6 @@ app.use(
 );
 
 app.set("trust proxy", 1);
-// console.log(env.NODE_ENV);
 
 app.use(
   session({
@@ -85,13 +79,15 @@ app.get("/", (req: Request, res: Response) => {
     message: "Server is working!!!",
   });
 });
+
 app.use("/api/v1/auth/login", authLimiter);
 app.use("/api/v1/auth/register", authLimiter);
 
+//main routers
 app.use("/api/v1/auth", AuthRouter);
+app.use("/api/v1/googleOAuth", googleRouter);
 app.use("/api/v1/thumbnail", ThumbnailRouter);
 app.use("/api/v1/user", UserRouter);
-app.use("/api/v1/googleOAuth", googleRouter);
 
 const port = env.PORT || 3000;
 

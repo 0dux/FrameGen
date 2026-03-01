@@ -3,19 +3,19 @@ import { Request, Response } from "express";
 import z from "zod";
 import User from "../models/User.models.js";
 
+const registerSchema = z.object({
+  name: z.string().trim().min(2, "Name must be atleast 2 characters"),
+  email: z.email("Invalid email format").trim(),
+  password: z.string().trim().min(8, "Password must be at least 8 characters"),
+});
+
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const data = req.body;
 
-    const registerSchema = z.object({
-      name: z.string().trim(),
-      email: z.email().trim(),
-      password: z.string().trim(),
-    });
-
-    //Input validation
     const result = registerSchema.safeParse(data);
 
+    //Input validation
     if (!result.success) {
       return res.status(400).json({
         message: "Invalid inputs passed.",
@@ -49,7 +49,7 @@ export const registerUser = async (req: Request, res: Response) => {
         console.error("Session save error:", err);
         return res.status(500).json({ message: "Session error" });
       }
-      return res.status(200).json({
+      return res.status(201).json({
         message: "Account created successfully",
         user: {
           id: newUser._id,
@@ -75,9 +75,9 @@ export const loginUser = async (req: Request, res: Response) => {
       password: z.string().trim(),
     });
 
-    //Input validation
     const result = loginSchema.safeParse(data);
 
+    //Input validation
     if (!result.success) {
       return res.status(400).json({
         message: "Invalid inputs passed.",
@@ -169,16 +169,16 @@ export const verifyUser = async (req: Request, res: Response) => {
     }
 
     return res.json({
+      message: "User verified",
       user: {
         name: user.name,
         email: user.email,
         credits: user.credits,
       },
-      message: "User verified",
     });
   } catch (error: any) {
     console.error(error);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Internal Server Error",
     });
   }
