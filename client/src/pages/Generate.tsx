@@ -17,32 +17,44 @@ import api from "../configs/api";
 import { useAuth } from "../context/AuthContext";
 
 const Generate = () => {
-  const { id } = useParams();
-  const { pathname } = useLocation();
+  const { id } = useParams(); //what does this return and do?
+
   const navigate = useNavigate();
+
+  const { pathname } = useLocation(); //what does this return and do
+
   const { isLoggedIn, refreshCredits } = useAuth();
+
+  const [thumbnail, setThumbnail] = useState<IThumbnail | null>(null);
+  const [loading, setLoading] = useState(false); //is this the loading state for thumbnail or the page?
+
+  const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
+
+  //thumbnail
   const [title, setTitle] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
   const [aspectRatios, setAspectRatios] = useState<AspectRatio>("16:9");
   const [style, setStyle] = useState<ThumbnailStyle>("Bold & Graphic");
-  const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
   const [colorSchemeId, setColorSchemeId] = useState(
-    colorSchemes[0].id as string,
+    (colorSchemes[0]?.id as string) ?? "",
   );
-  const [thumbnail, setThumbnail] = useState<IThumbnail | null>(null);
-  const [loading, setLoading] = useState(false);
+
   const [fetchAttempts, setFetchAttempts] = useState(0);
 
   //Generate the thumbnail
   const handleGenerate = async () => {
+    //explain what each function does?
     try {
       if (!isLoggedIn) {
         return toast.error("Please login to generate thumbnails.");
       }
+
       if (!title.trim()) {
         return toast.error("Title is required!");
       }
+
       setLoading(true);
+
       const api_payload = {
         title,
         prompt: additionalDetails,
@@ -51,10 +63,12 @@ const Generate = () => {
         color_scheme: colorSchemeId,
         text_overlay: true,
       };
+
       const { data } = await api.post(
         "/api/v1/thumbnail/generate",
         api_payload,
       );
+
       if (data.thumbnail) {
         navigate("/generate/" + data.thumbnail._id);
         toast.success(data.message);
@@ -72,10 +86,9 @@ const Generate = () => {
     try {
       const { data } = await api.get(`/api/v1/user/thumbnail/${id}`);
 
-      // Check if response is wrapped or direct
       const thumbnailData = data?.thumbnail || data;
 
-      console.log("Setting thumbnail data:", thumbnailData);
+      // console.log("Setting thumbnail data:", thumbnailData);
 
       setThumbnail(thumbnailData as IThumbnail);
       setTitle(thumbnailData?.title);
@@ -92,18 +105,19 @@ const Generate = () => {
       console.error(error);
       toast.error(
         error?.response?.data?.message ||
-          "Some error has occured during generation",
+          "Some error has occurred during generation",
       );
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    //explain the all the useeffects used in this page in detail like explaining to a beginner?
     if (isLoggedIn && id) {
       fetchThumbnail();
-      setFetchAttempts(0); // Reset attempts on new id
+      setFetchAttempts(0);
     }
-  }, [id, isLoggedIn]);
+  }, [id, isLoggedIn, fetchThumbnail]);
 
   //Whenever a thumbnail exists it is requested from the backend for 3 times only.
   useEffect(() => {
@@ -122,9 +136,10 @@ const Generate = () => {
           return newAttempts;
         });
       }, 5 * 1000);
+
       return () => clearInterval(interval);
     }
-  }, [id, isLoggedIn, loading, fetchAttempts]);
+  }, [id, isLoggedIn, loading, fetchAttempts, fetchThumbnail]);
 
   //Whenever the pathname changes the thumbnail disappears
   useEffect(() => {
@@ -198,9 +213,8 @@ const Generate = () => {
                     </label>
                     <textarea
                       value={additionalDetails}
-                      onChange={(e) => setAdditionalDetails(e.target.value)}
+                      placeholder="Add any extra details you want to be present in the image"
                       rows={3}
-                      placeholder="Add any extra details you what to be present in the image"
                       className="w-full px-4 py-3 rounded-lg border border-white/12 bg-black/20 text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                     ></textarea>
                   </div>
@@ -209,6 +223,7 @@ const Generate = () => {
                 {/* Submit Button */}
                 {!id && (
                   <button
+                    disabled={loading}
                     onClick={handleGenerate}
                     className="py-3.5 bg-blue-700 rounded-xl w-full text-sm bg-linear-to-b from-blue-500 to-blue-700 font-medium hover:from-blue-700 transition-colors disabled:cursor-not-allowed duration-200"
                   >

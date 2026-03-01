@@ -15,6 +15,7 @@ import { useAuth } from "../context/AuthContext";
 
 const MyGeneration = () => {
   const { isLoggedIn } = useAuth();
+
   const navigate = useNavigate();
 
   const aspectRatioClassMap: Record<string, string> = {
@@ -61,7 +62,7 @@ const MyGeneration = () => {
       console.error(error);
       toast.error(
         error?.response?.data?.message ||
-          "Some error has occured during fetching thumbnails",
+          "Some error has occurred during fetching thumbnails",
       );
     } finally {
       setLoading(false);
@@ -97,7 +98,7 @@ const MyGeneration = () => {
       if (!confirm) return;
       const { data } = await api.delete(`/api/v1/thumbnail/delete/${id}`);
       toast.success(data.message);
-      setThumbnails(thumbnails.filter((t) => t._id != id));
+      setThumbnails(thumbnails.filter((t) => t._id !== id));
     } catch (error: any) {
       console.error(error);
       toast.error(
@@ -112,6 +113,7 @@ const MyGeneration = () => {
       fetchThumbnail();
     }
   }, [isLoggedIn]);
+
   return (
     <>
       <SoftBackDrop />
@@ -197,7 +199,9 @@ const MyGeneration = () => {
                       </span>
                     </div>
                     <p className="text-xs text-zinc-500">
-                      {new Date(thumb.createdAt!).toDateString()}
+                      {thumb.createdAt
+                        ? new Date(thumb.createdAt).toDateString()
+                        : "N/A"}{" "}
                     </p>
                   </div>
 
@@ -235,7 +239,7 @@ const MyGeneration = () => {
                     />
                     <Link
                       target="_blank"
-                      to={`/preview?thumbnail_url=${thumb.image_url}&title=${thumb.title}`}
+                      to={`/preview?thumbnail_url=${encodeURIComponent(thumb.image_url || "")}&title=${encodeURIComponent(thumb.title || "")}`}
                     >
                       <ArrowUpRight className="size-6 bg-black/50 p-1 rounded hover:bg-blue-600 transition-all" />
                     </Link>

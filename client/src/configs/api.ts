@@ -1,7 +1,5 @@
 import axios from "axios";
 
-// In production, use relative URLs to go through Vercel proxy (same-origin)
-// In development, use the local server URL
 const isDev = import.meta.env.DEV;
 
 const api = axios.create({

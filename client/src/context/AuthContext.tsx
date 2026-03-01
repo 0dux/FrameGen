@@ -5,10 +5,9 @@ import api from "../configs/api";
 
 interface AuthContextProps {
   isLoggedIn: boolean;
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
   user: IUser | null;
-  setUser: (user: IUser | null) => void;
   credits: number | null;
+  updateAuthState: (user: IUser | null) => Promise<void>;
   refreshCredits: () => Promise<void>;
   signUp: (user: {
     name: string;
@@ -20,11 +19,15 @@ interface AuthContextProps {
 }
 
 const AuthContext = createContext<AuthContextProps>({
+  //states
   isLoggedIn: false,
-  setIsLoggedIn: () => {},
   user: null,
-  setUser: () => {},
   credits: null,
+
+  //setter functions
+  updateAuthState: async () => {},
+
+  //functions
   refreshCredits: async () => {},
   signUp: async () => {},
   login: async () => {},
@@ -32,6 +35,7 @@ const AuthContext = createContext<AuthContextProps>({
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  //states
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [credits, setCredits] = useState<number | null>(null);
@@ -43,6 +47,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setCredits(data.credits);
     } catch (error: any) {
       console.error(error);
+    }
+  };
+
+  // Update Auth State
+  const updateAuthState = async (newUser: IUser | null) => {
+    setUser(newUser);
+    setIsLoggedIn(newUser !== null);
+    if (newUser !== null) {
+      await refreshCredits();
+    } else {
+      setCredits(null);
     }
   };
 
@@ -63,8 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       });
       if (data.user) {
-        setUser(data.user as IUser);
-        setIsLoggedIn(true);
+        await updateAuthState(data.user as IUser);
       }
       toast.success(data.message);
     } catch (error: any) {
@@ -91,9 +105,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       });
 
       if (data.user) {
-        setUser(data.user as IUser);
-        setIsLoggedIn(true);
-        await refreshCredits();
+        await updateAuthState(data.user as IUser);
       }
       toast.success(data.message);
     } catch (error: any) {
@@ -108,9 +120,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     try {
       const { data } = await api.post("/api/v1/auth/logout");
-      setUser(null);
-      setIsLoggedIn(false);
-      setCredits(null);
+      await updateAuthState(null);
       toast.success(data.message);
     } catch (error: any) {
       console.error(error);
@@ -120,14 +130,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  //Fetch User 
+  //Fetch User
   const fetchUser = async () => {
     try {
       const { data } = await api.get("/api/v1/auth/verify");
       if (data.user) {
-        setUser(data.user as IUser);
-        setIsLoggedIn(true);
-        await refreshCredits();
+        await updateAuthState(data.user as IUser);
       }
     } catch (error) {
       console.error(error);
@@ -142,10 +150,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const value = {
     user,
-    setUser,
     isLoggedIn,
-    setIsLoggedIn,
     credits,
+    updateAuthState,
     refreshCredits,
     signUp,
     login,
