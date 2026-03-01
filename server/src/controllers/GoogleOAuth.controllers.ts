@@ -16,6 +16,7 @@ const CLIENT_URL = env.CLIENT_URL;
 export const googleLogin = async (req: Request, res: Response) => {
   try {
     const state = crypto.randomBytes(32).toString("hex");
+
     req.session.state = state;
 
     const authorizationUrl = oauth2Client.generateAuthUrl({
