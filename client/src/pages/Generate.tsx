@@ -213,6 +213,7 @@ const Generate = () => {
                     </label>
                     <textarea
                       value={additionalDetails}
+                      onChange={(e) => setAdditionalDetails(e.target.value)}
                       placeholder="Add any extra details you want to be present in the image"
                       rows={3}
                       className="w-full px-4 py-3 rounded-lg border border-white/12 bg-black/20 text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
