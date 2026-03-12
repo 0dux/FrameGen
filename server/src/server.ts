@@ -42,7 +42,7 @@ app.use(limiter);
 
 app.use(
   cors({
-    origin: env.CLIENT_URL || "http://localhost:5173",
+    origin: env.CLIENT_URL || "http://localhost:3000",
     credentials: true,
   }),
 );

@@ -188,7 +188,8 @@ export const generateThumbnail = async (req: Request, res: Response) => {
     //Generating file buffer
     let finalBuffer: Buffer | null = null; //explain this?
 
-    for (const part of parts) { //explain this in detail with code example and its outputs for better clarity?
+    for (const part of parts) {
+      //explain this in detail with code example and its outputs for better clarity?
       if (part.inlineData) {
         finalBuffer = Buffer.from(part.inlineData.data, "base64");
         break;
@@ -223,7 +224,8 @@ export const generateThumbnail = async (req: Request, res: Response) => {
       });
     } finally {
       //Delete file once uploaded or if error occurred
-      if (fs.existsSync(filePath)) { //explain to me the main functions of fs library and what they do exactly and what are there outputs?
+      if (fs.existsSync(filePath)) {
+        //explain to me the main functions of fs library and what they do exactly and what are there outputs?
         fs.unlinkSync(filePath);
       }
     }
@@ -248,7 +250,8 @@ export const deleteThumbnail = async (req: Request, res: Response) => {
     const { userId } = req.session;
 
     // Validate ObjectId to prevent injection
-    if (!mongoose.Types.ObjectId.isValid(id as string)) { //explain this?
+    if (!mongoose.Types.ObjectId.isValid(id as string)) {
+      //explain this?
       return res.status(400).json({ message: "Invalid thumbnail ID" });
     }
 
@@ -299,7 +302,9 @@ export const togglePublished = async (req: Request, res: Response) => {
 
 export const getPublishedThumbnails = async (req: Request, res: Response) => {
   try {
-    const thumbnails = await Thumbnail.find({ isPublished: true });
+    const thumbnails = await Thumbnail.find({ isPublished: true }).sort({
+      createdAt: -1,
+    });
 
     if (!thumbnails) {
       return res.status(404).json({
@@ -318,7 +323,8 @@ export const getPublishedThumbnails = async (req: Request, res: Response) => {
   }
 };
 
-export const proxyDownload = async (req: Request, res: Response) => { //explain this controller in detail everything should be explained in detail in this one?
+export const proxyDownload = async (req: Request, res: Response) => {
+  //explain this controller in detail everything should be explained in detail in this one?
   try {
     const { url, filename } = req.query;
 
