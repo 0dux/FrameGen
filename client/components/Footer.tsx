@@ -2,7 +2,9 @@
 
 import { Github01Icon, Linkedin01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import Image from "next/image";
 import Link from "next/link";
+import frameGenLogo from "@/app/assets/frameGen.svg";
 import { FlickeringGrid } from "./ui/flickering-grid";
 
 export function Footer() {
@@ -16,7 +18,20 @@ export function Footer() {
         </div>
 
         {/* Main Content Center */}
-        <div className="z-10 relative flex-1 flex items-center justify-center w-full my-12">
+        <div className="z-10 relative flex-1 flex flex-col items-center justify-center w-full my-12">
+          <div
+            className="w-30 h-30 bg-primary transition-all mb-4 opacity-80"
+            style={{
+              maskImage: `url(${frameGenLogo.src})`,
+              maskSize: "contain",
+              maskRepeat: "no-repeat",
+              maskPosition: "center",
+              WebkitMaskImage: `url(${frameGenLogo.src})`,
+              WebkitMaskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+            }}
+          />
           <h2 className="text-[16vw] xl:text-[232px] font-bold tracking-normal text-foreground/90 select-none text-center leading-none whitespace-nowrap">
             Frame Gen
           </h2>
