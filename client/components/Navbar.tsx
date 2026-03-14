@@ -1,6 +1,6 @@
 "use client";
 
-import frameGenLogo from "@/app/assets/frameGen.svg";
+import frameGen from "@/app/assets/frameGen.svg";
 import { useAuth } from "@/app/context/auth-context";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -104,18 +105,12 @@ export function Navbar() {
             href={"/"}
             className="flex-1 flex items-center gap-2 hover:cursor-pointer active:scale-95 transition-transform"
           >
-            <div
-              className="w-10 h-10 bg-primary transition-all"
-              style={{
-                maskImage: `url(${frameGenLogo.src})`,
-                maskSize: "contain",
-                maskRepeat: "no-repeat",
-                maskPosition: "center",
-                WebkitMaskImage: `url(${frameGenLogo.src})`,
-                WebkitMaskSize: "contain",
-                WebkitMaskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-              }}
+            <Image
+              src={frameGen}
+              alt="Frame Gen Logo"
+              width={40}
+              height={40}
+              className="w-10 h-10 object-contain dark:invert"
             />
             <span className="font-bold text-xl tracking-tight text-foreground whitespace-nowrap">
               Frame Gen
