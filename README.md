@@ -22,118 +22,96 @@
 
 ## Overview
 
-Frame-Gen is a full-stack web application that leverages Google's Gemini AI to generate eye-catching thumbnails for videos. Simply enter your video title, select a style, aspect ratio, and color scheme — and let AI do the rest. No design skills required!
+Frame-Gen is a full-stack web application powered by **Next.js 16** and Google's Gemini AI. It enables content creators to generate professional-looking thumbnails by simply entering a title and selecting from curated styles and palettes.
 
 ## Features
 
 - 🎨 **AI-Powered Generation** — Create professional thumbnails using Google Gemini AI
-- ⚡ **Fast Iterations** — Generate multiple variations and choose what fits best
+- ⚡ **Next.js Speed** — Optimized performance and SEO with Next.js 16
 - 🖼️ **Multiple Styles** — Bold & Graphic, Minimalist, Cinematic, and more
-- 📐 **Aspect Ratio Options** — Support for 16:9, 1:1, 4:3, and other formats
-- 🎭 **Color Schemes** — Choose from curated color palettes
-- 🔐 **Google OAuth** — Secure authentication with Google
-- 💾 **Save & Manage** — Access all your generated thumbnails anytime
-- 🌐 **Community Gallery** — Browse and get inspired by community creations
-- 📱 **Responsive Design** — Works seamlessly on desktop and mobile
+- 📐 **Aspect Ratio Options** — Support for 16:9, 1:1, 4:3, and more
+- 🎭 **Curated Palettes** — Professional color schemes for every niche
+- 🔐 **Secure Auth** — Google OAuth 2.0 and robust session management
+- 🛡️ **Security First** — Rate limiting and Helmet.js protection on the backend
+- 💾 **Save & Manage** — Access and re-download your collection anytime
+- 📱 **Responsive Design** — Beautifully crafted UI that works on all devices
 
 ## Tech Stack
 
 ### Frontend
 
-|                                                       Technology                                                       | Name          | Purpose                                        |
-| :--------------------------------------------------------------------------------------------------------------------: | ------------- | ---------------------------------------------- |
-|           ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)           | React 19      | UI library for building interactive components |
-|            ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)             | Vite          | Lightning-fast build tool and dev server       |
-|  ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)  | TailwindCSS   | Utility-first CSS framework for styling        |
-|      ![Framer Motion](https://img.shields.io/badge/Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)      | Framer Motion | Smooth animations and transitions              |
-| ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white) | React Router  | Client-side routing and navigation             |
+| Technology                                                                                                            | Name             | Purpose                                        |
+| :-------------------------------------------------------------------------------------------------------------------- | ---------------- | ---------------------------------------------- |
+| ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)            | Next.js 16       | Modern React framework for SSR & SEO           |
+| ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)                     | React 19         | UI library for building components             |
+| ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)  | Tailwind CSS 4   | High-performance utility CSS                   |
+| ![Framer Motion](https://img.shields.io/badge/Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)        | Framer Motion 12 | Fluid animations and transitions               |
+| ![Shadcn UI](https://img.shields.io/badge/Shadcn_UI-000000?style=for-the-badge&logo=shadcnui&logoColor=white)          | Shadcn UI        | Modern, accessible component library           |
 
 ### Backend
 
-|                                                        Technology                                                         | Name          | Purpose                                     |
-| :-----------------------------------------------------------------------------------------------------------------------: | ------------- | ------------------------------------------- |
-|         ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)          | Express 5     | Web server framework for REST APIs          |
-|         ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)          | MongoDB       | NoSQL database for storing user data        |
-| ![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white) | Google Gemini | AI-powered image generation                 |
-|     ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)     | Cloudinary    | Image storage, optimization, and CDN        |
-|     ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)     | TypeScript    | Type-safe JavaScript development            |
-|               ![Zod](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)                | Zod           | Schema validation for request/response data |
+| Technology                                                                                                            | Name             | Purpose                                     |
+| :-------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------------------------------------- |
+| ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)              | Express 5        | Web server framework for REST APIs          |
+| ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)              | MongoDB          | Scalable NoSQL database                     |
+| ![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white) | Google Gemini AI | Advanced image & prompt generation          |
+| ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)     | TypeScript       | Static typing for reliability               |
+| ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)       | Cloudinary       | Distributed image storage & CDN             |
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
-- MongoDB instance (local or Atlas)
-- Google Cloud Console project with OAuth credentials
+- MongoDB instance (Atlas or Local)
+- Google Cloud Console project (for OAuth)
 - Cloudinary account
 - Google AI Studio API key (for Gemini)
 
 ### Installation
 
 1. **Clone the repository**
-
    ```bash
    git clone https://github.com/0dux/frame-gen.git
    cd frame-gen
    ```
 
 2. **Install dependencies**
-
    ```bash
-   # Install server dependencies
-   cd server
-   npm install
+   # Server
+   cd server && npm install
 
-   # Install client dependencies
-   cd ../client
-   npm install
+   # Client
+   cd ../client && npm install
    ```
 
 3. **Set up environment variables** (see [Environment Variables](#environment-variables))
 
-4. **Run the development servers**
-
+4. **Run development servers**
    ```bash
-   # Terminal 1 - Start backend server
-   cd server
-   npm run server
+   # Terminal 1: Backend
+   cd server && npm run server
 
-   # Terminal 2 - Start frontend
-   cd client
-   npm run dev
+   # Terminal 2: Frontend
+   cd client && npm run dev
    ```
-
-5. **Open your browser**
-   - Frontend: `http://localhost:5173`
-   - Backend: `http://localhost:3000`
 
 ## Environment Variables
 
-Create a `.env` file in the `server` directory:
-
+### Server (`/server/.env`)
 ```env
-# Database
 MONGODB_URI=mongodb://localhost:27017/frame-gen
+SESSION_SECRET=your-session-secret
 
-# Session
-SESSION_SECRET=your-super-secret-session-key
-
-# Google AI (Gemini)
-GEMINI_API_KEY=your-gemini-api-key
-
-# Cloudinary
+GEMINI_API_KEY=your-gemini-key
 CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
 
-# Google OAuth
-GOOGLE_OAUTH_CLIENT_ID=your-google-client-id
-GOOGLE_OAUTH_CLIENT_SECRET=your-google-client-secret
-GOOGLE_OAUTH_REDIRECT_URL=http://localhost:3000/api/v1/auth/google/callback
+GOOGLE_OAUTH_CLIENT_ID=your-client-id
+GOOGLE_OAUTH_CLIENT_SECRET=your-client-secret
+GOOGLE_OAUTH_REDIRECT_URL=http://localhost:4040/api/v1/business/auth/google/callback
 
-# Optional
-CLIENT_URL=http://localhost:5173
-NODE_ENV=development
-PORT=3000
+CLIENT_URL=http://localhost:3000
+PORT=4040
 ```
 
 ## Usage
@@ -148,47 +126,72 @@ PORT=3000
 
 ## Project Structure
 
+### Workspace Layout
+```mermaid
+graph TD
+    Root[frame-gen] --> Client[client - Next.js]
+    Root --> Server[server - Express]
+    
+    Client --> AppDir[app/ - App Router]
+    Client --> CompDir[components/ - UI Components]
+    Client --> LibDir[lib/ - Utils & Helpers]
+    
+    Server --> SrcDir[src/]
+    SrcDir --> Routes[routes/ - API Routing]
+    SrcDir --> Controllers[controllers/ - Business Logic]
+    SrcDir --> Models[models/ - DB Schemas]
 ```
-frame-gen/
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── assets/         # Static assets & constants
-│   │   ├── components/     # Reusable UI components
-│   │   ├── configs/        # API configuration
-│   │   ├── context/        # React context (Auth)
-│   │   ├── data/           # Static data (features, pricing)
-│   │   ├── pages/          # Page components
-│   │   └── sections/       # Homepage sections
-│   └── public/             # Public assets
-│
-├── server/                 # Express backend
-│   ├── src/
-│   │   ├── config/         # App configuration
-│   │   ├── controllers/    # Route handlers
-│   │   ├── middlewares/    # Auth & validation
-│   │   ├── models/         # Mongoose schemas
-│   │   └── routes/         # API routes
-│   └── api/                # Vercel serverless entry
-│
-└── README.md
-```
+
+### Key Directories
+- **`client/app/`**: Contains the core logic for the Next.js App Router.
+    - `auth/`: Handle user login and registration flows.
+    - `generate/`: The primary workspace for AI thumbnail creation.
+    - `my-generations/`: Restricted area for users to manage their saved designs.
+    - `community/`: Public gallery to browse and download shared thumbnails.
+    - `context/`: Authentication and theme state management.
+    - `landing/`: Modular sections for the high-conversion landing page.
+- **`server/src/`**: Houses the backend architecture.
+    - `routes/`: Express routers organized by resource.
+    - `controllers/`: High-level logic for handling requests and AI integration.
+    - `middlewares/`: Security checks, authentication guards, and rate limiting.
 
 ## API Endpoints
 
-| Method | Endpoint                       | Description            |
-| ------ | ------------------------------ | ---------------------- |
-| POST   | `/api/v1/auth/google`          | Initiate Google OAuth  |
-| GET    | `/api/v1/auth/google/callback` | OAuth callback         |
-| POST   | `/api/v1/thumbnail/generate`   | Generate new thumbnail |
-| GET    | `/api/v1/user/thumbnail/:id`   | Get specific thumbnail |
-| GET    | `/api/v1/user/thumbnails`      | Get user's thumbnails  |
+### Authentication
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| POST | `/api/v1/auth/register` | Create a new account | ❌ |
+| POST | `/api/v1/auth/login` | Email/Password login | ❌ |
+| POST | `/api/v1/auth/logout` | Clear session cookie | ✅ |
+| GET | `/api/v1/auth/verify` | Validate current session | ✅ |
+
+### Google OAuth
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| GET | `/api/v1/googleOAuth/login` | Start Google OAuth flow | ❌ |
+| GET | `/api/v1/googleOAuth/callback` | OAuth redirect handler | ❌ |
+
+### Thumbnails
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| POST | `/api/v1/thumbnail/generate` | Generate AI thumbnail | ✅ |
+| DELETE | `/api/v1/thumbnail/delete/:id` | Remove a thumbnail | ✅ |
+| PATCH | `/api/v1/thumbnail/toggle-published/:id` | Share/Unshare with community | ✅ |
+| GET | `/api/v1/thumbnail/community` | Fetch public gallery | ❌ |
+| GET | `/api/v1/thumbnail/download-proxy` | Secure download handler | ✅ |
+
+### User Profile
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :---: |
+| GET | `/api/v1/user/thumbnails` | Get all user thumbnails | ✅ |
+| GET | `/api/v1/user/thumbnail/:id` | Get specific metadata | ✅ |
+| GET | `/api/v1/user/credits` | Check remaining AI credits | ✅ |
 
 ## Deployment
 
-Both client and server are configured for **Vercel** deployment:
-
-- `client/vercel.json` — Frontend deployment config
-- `server/vercel.json` — Backend serverless config
+Configured for seamless deployment on **Vercel**.
+- Client: Next.js optimized
+- Server: Express serverless functions
 
 ## Contributing
 
