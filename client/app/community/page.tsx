@@ -24,22 +24,48 @@ const Community = () => {
   };
 
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [thumbnails, setThumbnails] = useState<IThumbnail[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
 
-  const fetchThumbnails = async () => {
+  const fetchThumbnails = async (pageNumber: number = 1) => {
     try {
-      setLoading(true);
-      const { data } = await api.get("/api/v1/thumbnail/community");
-      setThumbnails(data.thumbnails || []);
+      if (pageNumber === 1) {
+        setLoading(true);
+      } else {
+        setLoadingMore(true);
+      }
+      
+      const { data } = await api.get("/api/v1/thumbnail/community", {
+        params: { page: pageNumber, limit: 20 },
+      });
+      
+      const newThumbnails = data.thumbnails || [];
+      if (pageNumber === 1) {
+        setThumbnails(newThumbnails);
+      } else {
+        setThumbnails((prev) => [...prev, ...newThumbnails]);
+      }
+      
+      setHasMore(data.hasMore);
+      setPage(pageNumber);
     } catch (error: any) {
       console.error(error);
-      toast.error(
-        error?.response?.data?.message ||
-          "Some error has occurred while fetching thumbnails",
-      );
+      if (error?.response?.status !== 404) {
+        toast.error(
+          error?.response?.data?.message ||
+            "Some error has occurred while fetching thumbnails",
+        );
+      }
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
+  };
+
+  const handleLoadMore = () => {
+    fetchThumbnails(page + 1);
   };
 
   const handleDownload = async (image_url: string, title?: string) => {
@@ -206,6 +232,20 @@ const Community = () => {
               </Card>
             );
           })}
+        </div>
+      )}
+
+      {/* Load More Button */}
+      {hasMore && (
+        <div className="mt-12 mb-24 flex justify-center">
+          <Button
+            onClick={handleLoadMore}
+            disabled={loadingMore}
+            size="lg"
+            className="rounded-2xl px-8 py-6 text-lg font-bold shadow-xl hover:scale-105 transition-all bg-primary hover:bg-primary/95"
+          >
+            {loadingMore ? "Loading More..." : "Load More Thumbnails"}
+          </Button>
         </div>
       )}
     </div>

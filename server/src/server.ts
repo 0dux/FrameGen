@@ -89,7 +89,7 @@ app.use("/api/v1/googleOAuth", googleRouter);
 app.use("/api/v1/thumbnail", ThumbnailRouter);
 app.use("/api/v1/user", UserRouter);
 
-const port = env.PORT || 3000;
+const port = env.PORT || 4040;
 
 if (env.NODE_ENV !== "production") {
   app.listen(port, () => {

@@ -302,18 +302,39 @@ export const togglePublished = async (req: Request, res: Response) => {
 
 export const getPublishedThumbnails = async (req: Request, res: Response) => {
   try {
-    const thumbnails = await Thumbnail.find({ isPublished: true }).sort({
-      createdAt: -1,
-    });
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const skip = (page - 1) * limit;
 
-    if (!thumbnails) {
-      return res.status(404).json({
-        message: "No one has published any thumbnails yet",
+    const totalCount = await Thumbnail.countDocuments({ isPublished: true });
+    const thumbnails = await Thumbnail.find({ isPublished: true })
+      .sort({
+        createdAt: -1,
+      })
+      .skip(skip)
+      .limit(limit);
+
+    if (!thumbnails || thumbnails.length === 0) {
+      if (page === 1) {
+        return res.status(404).json({
+          message: "No one has published any thumbnails yet",
+        });
+      }
+      return res.status(200).json({
+        thumbnails: [],
+        totalCount,
+        currentPage: page,
+        hasMore: false,
       });
     }
 
+    const hasMore = skip + thumbnails.length < totalCount;
+
     return res.json({
       thumbnails,
+      totalCount,
+      currentPage: page,
+      hasMore,
     });
   } catch (error: any) {
     console.error(error);
