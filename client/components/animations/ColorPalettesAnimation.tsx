@@ -86,7 +86,7 @@ export function ColorPalettesAnimation() {
       <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-white/10" />
 
       <div className="relative flex h-full items-center justify-center">
-        <div className="relative h-24 w-full max-w-[32rem]">
+        <div className="relative h-24 w-full max-w-lg">
           {PALETTES.map((palette, index) => {
             const offset = getShortestOffset(index, activeIndex, PALETTES.length);
             const hidden = Math.abs(offset) > Math.floor(SLOT_COUNT / 2);
@@ -97,7 +97,7 @@ export function ColorPalettesAnimation() {
                 key={palette.id}
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                className="absolute left-1/2 top-1/2 h-12 w-[78px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                className="absolute left-1/2 top-1/2 h-12 w-19.5 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                 initial={false}
                 animate={{
                   x: offset * 88,
@@ -111,7 +111,7 @@ export function ColorPalettesAnimation() {
                 aria-label={`Switch to palette ${index + 1}`}
                 aria-pressed={isActive}
               >
-                <span className="absolute inset-[2px] overflow-hidden rounded-[14px]">
+                <span className="absolute inset-0.5 overflow-hidden rounded-[14px]">
                   <span className="flex h-full w-full">
                     {palette.colors.map((color) => (
                       <span
