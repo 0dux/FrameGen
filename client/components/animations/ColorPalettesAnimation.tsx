@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
 type Palette = {
   id: string;
@@ -33,19 +34,31 @@ function getShortestOffset(index: number, activeIndex: number, length: number) {
   return wrapped;
 }
 
-function getStageBackground(colors: [string, string, string]) {
+function getStageBackground(
+  colors: [string, string, string],
+  isDark: boolean,
+) {
+  const baseGradient = isDark
+    ? "linear-gradient(135deg, #090a0d 0%, #10141b 55%, #090a0d 100%)"
+    : "linear-gradient(135deg, #fff8f4 0%, #f7f9fc 48%, #eef4fb 100%)";
+  const mixedGradient = isDark
+    ? `linear-gradient(140deg, ${colors[0]}14 0%, transparent 24%, ${colors[1]}16 52%, transparent 74%, ${colors[2]}14 100%)`
+    : `linear-gradient(140deg, ${colors[0]}1f 0%, transparent 26%, ${colors[1]}22 52%, transparent 74%, ${colors[2]}1c 100%)`;
+
   return `
-    radial-gradient(circle at 18% 22%, ${colors[0]}42 0%, transparent 30%),
-    radial-gradient(circle at 82% 24%, ${colors[1]}36 0%, transparent 28%),
-    radial-gradient(circle at 50% 82%, ${colors[2]}28 0%, transparent 34%),
-    linear-gradient(140deg, ${colors[0]}14 0%, transparent 24%, ${colors[1]}16 52%, transparent 74%, ${colors[2]}14 100%),
-    linear-gradient(135deg, #090a0d 0%, #10141b 55%, #090a0d 100%)
+    radial-gradient(circle at 18% 22%, ${colors[0]}${isDark ? "42" : "30"} 0%, transparent 30%),
+    radial-gradient(circle at 82% 24%, ${colors[1]}${isDark ? "36" : "2b"} 0%, transparent 28%),
+    radial-gradient(circle at 50% 82%, ${colors[2]}${isDark ? "28" : "22"} 0%, transparent 34%),
+    ${mixedGradient},
+    ${baseGradient}
   `;
 }
 
 export function ColorPalettesAnimation() {
   const [activeIndex, setActiveIndex] = useState(0);
   const activePalette = PALETTES[activeIndex];
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -56,7 +69,7 @@ export function ColorPalettesAnimation() {
   }, []);
 
   return (
-    <div className="relative h-56 w-full overflow-hidden border-b border-border bg-[#0c0e12]">
+    <div className="relative h-56 w-full overflow-hidden border-b border-border bg-[#f8f7f4] dark:bg-[#0c0e12]">
       <AnimatePresence mode="wait">
         <motion.div
           key={activePalette.id}
@@ -65,7 +78,7 @@ export function ColorPalettesAnimation() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.45, ease: "easeInOut" }}
-          style={{ background: getStageBackground(activePalette.colors) }}
+          style={{ background: getStageBackground(activePalette.colors, isDark) }}
         />
       </AnimatePresence>
 
@@ -75,15 +88,22 @@ export function ColorPalettesAnimation() {
         transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
         style={{
           backgroundImage: `
-            linear-gradient(120deg, ${activePalette.colors[0]}12 0%, ${activePalette.colors[1]}18 48%, ${activePalette.colors[2]}12 100%),
-            linear-gradient(300deg, transparent 10%, ${activePalette.colors[2]}10 40%, ${activePalette.colors[0]}12 72%, transparent 100%)
+            linear-gradient(120deg, ${activePalette.colors[0]}${isDark ? "12" : "18"} 0%, ${activePalette.colors[1]}${isDark ? "18" : "22"} 48%, ${activePalette.colors[2]}${isDark ? "12" : "18"} 100%),
+            linear-gradient(300deg, transparent 10%, ${activePalette.colors[2]}${isDark ? "10" : "14"} 40%, ${activePalette.colors[0]}${isDark ? "12" : "18"} 72%, transparent 100%)
           `,
           backgroundSize: "180% 180%, 160% 160%",
         }}
       />
 
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.10),transparent_42%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-white/10" />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: isDark
+            ? "radial-gradient(circle at center, rgba(255,255,255,0.10), transparent 42%)"
+            : "radial-gradient(circle at center, rgba(255,255,255,0.52), transparent 44%)",
+        }}
+      />
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-black/10 dark:bg-white/10" />
 
       <div className="relative flex h-full items-center justify-center">
         <div className="relative h-24 w-full max-w-lg">
@@ -97,7 +117,7 @@ export function ColorPalettesAnimation() {
                 key={palette.id}
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                className="absolute left-1/2 top-1/2 h-12 w-19.5 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                className="absolute left-1/2 top-1/2 h-12 w-19.5 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-black/10 shadow-[0_10px_24px_rgba(15,23,42,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:border-white/15 dark:shadow-none dark:focus-visible:ring-white/70"
                 initial={false}
                 animate={{
                   x: offset * 88,
@@ -127,7 +147,7 @@ export function ColorPalettesAnimation() {
                 {isActive ? (
                   <motion.span
                     layoutId="palette-highlight"
-                    className="absolute inset-0 rounded-2xl border border-white/65 shadow-[0_0_30px_rgba(255,255,255,0.12)]"
+                    className="absolute inset-0 rounded-2xl border border-black/20 shadow-[0_10px_30px_rgba(15,23,42,0.16)] dark:border-white/65 dark:shadow-[0_0_30px_rgba(255,255,255,0.12)]"
                   />
                 ) : null}
               </motion.button>
