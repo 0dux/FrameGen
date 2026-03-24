@@ -103,7 +103,6 @@ export function ColorPalettesAnimation() {
             : "radial-gradient(circle at center, rgba(255,255,255,0.52), transparent 44%)",
         }}
       />
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-black/10 dark:bg-white/10" />
 
       <div className="relative flex h-full items-center justify-center">
         <div className="relative h-24 w-full max-w-lg">
