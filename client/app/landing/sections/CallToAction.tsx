@@ -49,7 +49,7 @@ export function CallToAction() {
         <div className="relative aspect-video rounded-3xl overflow-hidden border border-border/50 bg-accent/10 shadow-3xl backdrop-blur-sm group">
           <iframe
             className="absolute inset-0 w-full h-full"
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            src="https://youtu.be/lXogiTmWDvY?si=u6yT4UqBXS9jWTcB"
             title="Frame Gen Demo"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
